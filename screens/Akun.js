@@ -54,7 +54,7 @@ const Akun = ({ navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ListScreen")}>
           <View
             style={{
               marginVertical: 10,

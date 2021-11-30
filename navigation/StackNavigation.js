@@ -17,7 +17,9 @@ import UbahData from "../screens/Akun/UbahData";
 import Transfer from "../screens/Pembayaran/metode/Transfer";
 import QRIS from "../screens/Pembayaran/metode/QRIS";
 import FormKonfirmasi from "../screens/Pembayaran/FormKonfirmasi";
-
+import Penawaran from "../screens/Akun/History/Penawaran";
+import ListScreen from "../screens/Pesan/ListScreen";
+import Chat from "../screens/Pesan/Chat";
 
 const Stack = createNativeStackNavigator();
 const stackNavigation = () => {
@@ -37,11 +39,13 @@ const stackNavigation = () => {
       <Stack.Screen name="Tawar" component={Tawar} />
       <Stack.Screen name="BayarPesanan" component={BayarPesanan} />
       <Stack.Screen name="Pemesanan" component={Pemesanan} />
+      <Stack.Screen name="Penawaran" component={Penawaran} />
       <Stack.Screen name="UbahData" component={UbahData} />
       <Stack.Screen name="Transfer" component={Transfer} />
       <Stack.Screen name="QRIS" component={QRIS} />
       <Stack.Screen name="FormKonfirmasi" component={FormKonfirmasi} />
-
+      <Stack.Screen name="ListScreen" component={ListScreen} />
+      <Stack.Screen name="Chat" component={Chat} />
     </Stack.Navigator>
   );
 };

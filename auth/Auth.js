@@ -20,13 +20,13 @@ const initialLoginState = {
 const loginReducer = (prevState, action) => {
   switch (action.type) {
     case "RETRIEVE_TOKEN":
-      return { userToken: action.token, isLoading: false };
+      return { ...prevState, userToken: action.token, isLoading: false };
     case "LOGIN":
-      return { userToken: action.token, isLoading: false };
+      return { ...prevState, userToken: action.token, isLoading: false };
     case "LOGOUT":
-      return { userToken: null, isLoading: false };
+      return { ...prevState, userToken: null, isLoading: false };
     case "REGISTER":
-      return { userToken: action.token, isLoading: false };
+      return { ...prevState, userToken: action.token, isLoading: false };
   }
 };
 
@@ -54,8 +54,10 @@ const Auth = () => {
           .then((res) => res.json())
           .then((res) => {
             if (res.id) {
+              console.log(loginState);
               AsyncStorage.setItem("userToken", String(res.id));
-              dispatch({ type: "LOGIN", userToken: res.id });
+              dispatch({ type: "LOGIN", token: res.id });
+              console.log(loginState);
             } else if (res.message) {
               setTimeout(
                 () =>
@@ -109,8 +111,7 @@ const Auth = () => {
           .then((res) => {
             if (res.data.id) {
               AsyncStorage.setItem("userToken", String(res.data.id));
-              console.log(res.data.id);
-              dispatch({ type: "REGISTER", userToken: res.data.id });
+              dispatch({ type: "REGISTER", token: res.data.id });
             } else if (res.messages === "Gagal") {
               const data = Object.values(res.data);
               setTimeout(
@@ -138,7 +139,7 @@ const Auth = () => {
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "REGISTER", token: userToken });
+      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
     };
     retrieveToken();
   }, []);
@@ -160,7 +161,7 @@ const Auth = () => {
       }}
     >
       <NavigationContainer>
-        {loginState.userToken === null ? (
+        {loginState.userToken === null || undefined ? (
           <AuthNavigation />
         ) : (
           <StackNavigation />

@@ -9,7 +9,7 @@ import Stars from "react-native-stars";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ProfileNavigation = (props) => {
+const ProfileNavigation = (route, props) => {
   const [item, setItem] = useState([
     { nama: "Sepatu Mulus", harga: "500000", id: 1, hargaPromo: 30000 },
     { nama: "Baju Mulus", harga: "600000", id: 2, hargaPromo: 30000 },
@@ -19,6 +19,7 @@ const ProfileNavigation = (props) => {
     { nama: "Celana Dalam", harga: "600000", id: 7, hargaPromo: 30000 },
     { nama: "Celana Luar", harga: "500000", id: 8, hargaPromo: 30000 },
   ]);
+
 
   const Produk = ({ navigation }) => {
     return (
@@ -116,11 +117,11 @@ const ProfileNavigation = (props) => {
   return (
     <Tab.Navigator
       activeColor={COLOR.primary}
-      tabBarOptions={{ indicatorStyle: { backgroundColor: COLOR.primary } }}
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "#f0f0f0",
         },
+        tabBarIndicatorStyle: { backgroundColor: COLOR.primary },
         tabBarLabelStyle: {
           fontSize: 14,
           fontFamily: "Montserrat-Semi-Bold",

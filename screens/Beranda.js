@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,253 +7,312 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { AuthContext } from "../auth/context";
 import Input from "../components/Input";
 import SemiBold from "../components/SemiBold";
 import Card from "../components/Card";
 import COLOR from "../constants/COLOR";
-
+import env from "../constants/env";
+import { DotIndicator } from "react-native-indicators";
 
 const Beranda = ({ navigation }) => {
-  const [item, setItem] = useState([
-    { nama: "Sepatu Mulus", harga: "500000", id: 1 },
-    { nama: "Baju Mulus", harga: "600000", id: 2 },
-    { nama: "Jam Mulus", harga: "700000", id: 3 },
-    { nama: "Celana Mulus", harga: "800000", id: 4 },
-  ]);
+  const [item, setItem] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const user = useContext(AuthContext);
+  const [err, setErr] = useState(null);
+
+  useEffect(() => {
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/rekomendasi/${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data.produk);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
+        }
+      });
+    return () => abortCont.abort();
+  }, [user]);
 
   const [Search, setSearch] = useState("");
-
   return (
     <View style={styles.screen}>
-      <View style={styles.searchbox}>
-        <Input
-          placeholder="Pencarian"
-          style={styles.input}
-          onChangeText={(e) => {
-            setSearch(e);
-          }}
-          defaultValue={Search}
-          onSubmitEditing={() =>
-            navigation.navigate("SearchResult", { Search: Search })
-          }
-        />
-
-        <Image
-          style={{
-            width: 18,
-            height: 18,
-            resizeMode: "stretch",
-            position: "absolute",
-            left: 220,
-          }}
-          source={require("../assets/img/icon/Vector3.png")}
-        />
-
+      {err && (
         <View
-          style={{
-            width: 70,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <TouchableOpacity onPress={() => {}}>
-            <Image
-              style={{ width: 18, height: 18, resizeMode: "stretch" }}
-              source={require("../assets/img/icon/Vector1.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Notifikasi")}>
-            <Image
-              style={{ width: 20, height: 20, resizeMode: "stretch" }}
-              source={require("../assets/img/icon/Vector2.png")}
-            />
-          </TouchableOpacity>
+          <SemiBold style={{ fontSize: 17.5 }}>{err}</SemiBold>
         </View>
-      </View>
-      <ScrollView>
-        <View style={styles.category}>
-          <SemiBold style={{ fontSize: 18 }}>Kategori</SemiBold>
-          <View
-            style={{
-              width: "100%",
-              marginTop: 15,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View style={{ width: 90 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Tas" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
+      )}
+      {loading && !err ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <DotIndicator color="#FF8D44" />
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <View style={styles.searchbox}>
+            <Input
+              placeholder="Pencarian"
+              style={styles.input}
+              onChangeText={(e) => {
+                setSearch(e);
+              }}
+              defaultValue={Search}
+              onSubmitEditing={() =>
+                navigation.navigate("SearchResult", { Search: Search })
+              }
+            />
 
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Tas.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Baju Wanita" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
+            <Image
+              style={{
+                width: 18,
+                height: 18,
+                resizeMode: "stretch",
+                position: "absolute",
+                left: 220,
+              }}
+              source={require("../assets/img/icon/Vector3.png")}
+            />
 
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Baju-Wanita.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Baju Pria" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Baju-Pria.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Jam" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Jam.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", {
-                    Kategori: "Sepatu",
-                  });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Sepatu.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90, marginTop: 15 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Game Console" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-
-                    resizeMode: "contain",
-                  }}
-                  source={require("../assets/img/icon/Kategori/ps.png")}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ width: 90, marginTop: 15 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Kendaraan" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/Sepedah.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: 90, marginTop: 15, position: "relative" }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Kategori", { Kategori: "Handphone" });
-                }}
-              >
-                <Image
-                  style={{
-                    width: 20,
-                    height: 35,
-
-                    left: 15,
-                    resizeMode: "stretch",
-                  }}
-                  source={require("../assets/img/icon/Kategori/hp.png")}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Kategori", { Kategori: "Lainya" });
+            <View
+              style={{
+                width: 70,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              <SemiBold style={{ fontSize: 15, color: COLOR.primary }}>
-                Lainya
-              </SemiBold>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ marginTop: 40 }}>
-          <View style={{ marginLeft: 20 }}>
-            <SemiBold style={{ fontSize: 20 }}>Rekomendasi</SemiBold>
-          </View>
-          <View style={styles.item}>
-            {item.map((i) => (
-              <Card
-                key={i.id}
-                id={i.id}
-                nama={i.nama}
-                harga={i.harga}
+              <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("ProductPage");
+                  navigation.navigate("ListScreen");
                 }}
-              />
-            ))}
+              >
+                <Image
+                  style={{ width: 18, height: 18, resizeMode: "stretch" }}
+                  source={require("../assets/img/icon/Vector1.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Notifikasi")}
+              >
+                <Image
+                  style={{ width: 20, height: 20, resizeMode: "stretch" }}
+                  source={require("../assets/img/icon/Vector2.png")}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
+          <ScrollView>
+            <View style={styles.category}>
+              <SemiBold style={{ fontSize: 18 }}>Kategori</SemiBold>
+              <View
+                style={{
+                  width: "100%",
+                  marginTop: 15,
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ width: 90 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", { Kategori: "Tas" });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Tas.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: 90 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Baju Wanita",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Baju-Wanita.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: 90 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Baju Pria",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Baju-Pria.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: 90 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", { Kategori: "Jam" });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Jam.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: 90 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Sepatu",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Sepatu.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: 90, marginTop: 15 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Game Console",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+
+                        resizeMode: "contain",
+                      }}
+                      source={require("../assets/img/icon/Kategori/ps.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ width: 90, marginTop: 15 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Kendaraan",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 50,
+                        height: 50,
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/Sepedah.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{ width: 90, marginTop: 15, position: "relative" }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Kategori", {
+                        Kategori: "Handphone",
+                      });
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 20,
+                        height: 35,
+
+                        left: 15,
+                        resizeMode: "stretch",
+                      }}
+                      source={require("../assets/img/icon/Kategori/hp.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("Kategori", { Kategori: "Lainya" });
+                  }}
+                >
+                  <SemiBold style={{ fontSize: 15, color: COLOR.primary }}>
+                    Lainya
+                  </SemiBold>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ marginTop: 40 }}>
+              <View style={{ marginLeft: 20 }}>
+                <SemiBold style={{ fontSize: 20 }}>Rekomendasi</SemiBold>
+              </View>
+              <View style={styles.item}>
+                {item.map((i) => (
+                  <Card
+                    key={i.id}
+                    id={i.id}
+                    hargaPromo={i.promo}
+                    nama={i.nama_produk}
+                    image={`${env.url}/assets/img/uploads/produk/${i.foto}`}
+                    harga={i.harga}
+                    onPress={() => {
+                      navigation.navigate("ProductPage", {
+                        itemId: i.id,
+                      });
+                    }}
+                  />
+                ))}
+              </View>
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      )}
     </View>
   );
 };

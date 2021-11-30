@@ -20,8 +20,11 @@ const Card = (props) => {
         <View style={{ alignItems: "center" }}>
           <View style={{ marginTop: 5 }}>
             <Image
-              style={styles.img}
-              source={require("../assets/img/Product/Sepatu.png")}
+              source={{
+                uri: props.image,
+                width: 165,
+                height: 170,
+              }}
             />
           </View>
         </View>
@@ -74,10 +77,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
-  },
-  img: {
-    width: 165,
-    height: 170,
   },
 });
 export default Card;
