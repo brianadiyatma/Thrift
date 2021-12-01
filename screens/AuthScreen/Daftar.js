@@ -4,6 +4,7 @@ import TouchablePrimary from "../../components/TouchablePrimary";
 import Input from "../../components/Input";
 import SemiBold from "../../components/SemiBold";
 import { AuthContext } from "../../auth/context";
+import { DotIndicator } from "react-native-indicators";
 
 const Login = ({ navigation }) => {
   const context = useContext(AuthContext);
@@ -72,15 +73,23 @@ const Login = ({ navigation }) => {
           <SemiBold style={{ fontWeight: "bold" }}>Masuk</SemiBold>
         </TouchableOpacity>
       </View>
-      <TouchablePrimary
-        style={styles.btn}
-        onPress={() =>
-          context.authContext.signUp(nama, tel, email, password, username)
-        }
-      >
-        Daftar
-      </TouchablePrimary>
-      <SemiBold style={{color:'red'}}>{context.error.errDaftar}</SemiBold>
+      {context.loading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <DotIndicator color="#FF8D44" />
+        </View>
+      ) : (
+        <TouchablePrimary
+          style={styles.btn}
+          onPress={() =>
+            context.authContext.signUp(nama, tel, email, password, username)
+          }
+        >
+          Daftar
+        </TouchablePrimary>
+      )}
+      <SemiBold style={{ color: "red" }}>{context.error.errDaftar}</SemiBold>
     </View>
   );
 };

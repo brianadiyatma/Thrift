@@ -28,10 +28,12 @@ const Filter = ({ navigation, route }) => {
 
   const onSubmit = () => {
     navigation.push("SearchResult", {
+      kategori: kategori,
       min: minimal,
       max: maximal,
       Search: params.Search,
       daerah: provinsi,
+      urutkan: urutkan,
     });
   };
 

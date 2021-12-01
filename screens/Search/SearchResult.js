@@ -28,6 +28,8 @@ const SearchResult = ({ navigation, route }) => {
         params.daerah ? params.daerah : ""
       }&search=${params.Search ? params.Search : ""}&max=${
         params.max ? params.max : ""
+      }&kategori=${params.kategori ? params.kategori : ""}&sort=${
+        params.kategori
       }`,
       {
         signal: abortCont.signal,

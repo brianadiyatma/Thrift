@@ -55,9 +55,12 @@ const UbahData = ({ navigation }) => {
       .then((res) => res.json())
       .then(() => {
         console.log("Success");
-        setLoadingButton(false);
+
         setStatus("Berhasil Diubah");
-        navigation.popToTop();
+        setTimeout(() => {
+          navigation.popToTop();
+          setLoadingButton(false);
+        }, 2000);
       })
       .catch((err) => {
         if (err.name === "AbortError") {

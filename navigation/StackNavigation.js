@@ -20,6 +20,7 @@ import FormKonfirmasi from "../screens/Pembayaran/FormKonfirmasi";
 import Penawaran from "../screens/Akun/History/Penawaran";
 import ListScreen from "../screens/Pesan/ListScreen";
 import Chat from "../screens/Pesan/Chat";
+import Bantuan from "../screens/Akun/Bantuan";
 
 const Stack = createNativeStackNavigator();
 const stackNavigation = () => {
@@ -46,6 +47,7 @@ const stackNavigation = () => {
       <Stack.Screen name="FormKonfirmasi" component={FormKonfirmasi} />
       <Stack.Screen name="ListScreen" component={ListScreen} />
       <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="Bantuan" component={Bantuan} />
     </Stack.Navigator>
   );
 };

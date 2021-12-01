@@ -40,7 +40,7 @@ const Akun = ({ navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("Bantuan")}>
           <View
             style={{
               marginVertical: 10,

@@ -20,14 +20,17 @@ const Promo = ({ navigation }) => {
         setItem(data.produk);
         setLoading(false);
       })
-      .catch((err) => setErr(err.message));
-    return () => {
-      if (err.name === "AbortError") {
-        console.log(err.name);
-      } else {
+      .catch((err) => {
         setErr(err.message);
-        setLoading(false);
-      }
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      abortCont.abort();
     };
   }, []);
 

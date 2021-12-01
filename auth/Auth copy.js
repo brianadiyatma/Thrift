@@ -31,7 +31,6 @@ const loginReducer = (prevState, action) => {
 };
 
 const Auth = () => {
-  const [Loading, setLoading] = useState(false);
   const [loginState, dispatch] = React.useReducer(
     loginReducer,
     initialLoginState
@@ -45,7 +44,6 @@ const Auth = () => {
   const authContext = React.useMemo(
     () => ({
       signIn: async (username, password) => {
-        setLoading(true);
         fetch(`${env.url}/api/login`, {
           method: "POST",
           headers: {
@@ -55,10 +53,11 @@ const Auth = () => {
         })
           .then((res) => res.json())
           .then((res) => {
-            setLoading(false);
             if (res.id) {
+              console.log(loginState);
               AsyncStorage.setItem("userToken", String(res.id));
               dispatch({ type: "LOGIN", token: res.id });
+              console.log(loginState);
             } else if (res.message) {
               setTimeout(
                 () =>
@@ -82,7 +81,6 @@ const Auth = () => {
             }
           })
           .catch((err) => {
-            setLoading(false);
             setError({ errLogin: "Kesalahan Jaringan", errDaftar: "" });
           });
       },
@@ -95,7 +93,6 @@ const Auth = () => {
         dispatch({ type: "LOGOUT" });
       },
       signUp: (nama, tel, email, password, username) => {
-        setLoading(true);
         fetch(`${env.url}/api/user`, {
           method: "POST",
           headers: {
@@ -112,7 +109,6 @@ const Auth = () => {
         })
           .then((res) => res.json())
           .then((res) => {
-            setLoading(false);
             if (res.data.id) {
               AsyncStorage.setItem("userToken", String(res.data.id));
               dispatch({ type: "REGISTER", token: res.data.id });
@@ -129,10 +125,7 @@ const Auth = () => {
               setError({ errLogin: "", errDaftar: data[0][0] });
             }
           })
-          .catch((err) => {
-            setError({ errLogin: "", errDaftar: err.message });
-            setLoading(false);
-          });
+          .catch((err) => setError({ errLogin: "", errDaftar: err.message }));
       },
     }),
     []
@@ -165,7 +158,6 @@ const Auth = () => {
         authContext: authContext,
         userToken: loginState.userToken,
         error: error,
-        loading: Loading,
       }}
     >
       <NavigationContainer>
