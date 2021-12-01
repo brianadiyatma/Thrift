@@ -2,7 +2,7 @@
 
 Thrift is an App Developed to provide a platform where people can sell their used stuff online. 
 
-However this is not a full fledged app. I just learned how to code. Maybe there are some flaws here and there that I didnt catch. Its good to asume that this app is not ready for production. There are might be improvement in the future but Im not sure
+However this is not a full fledged app. Maybe there are some flaws here and there that I didnt catch. Its good to asume that this app is not ready for production. There are might be improvement in the future but Im not sure. Its an app for my college project.
 
 to try out this project you need to have nodejs and expo installed on your system.
 
