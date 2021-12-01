@@ -13,7 +13,7 @@ import SemiBold from "../../components/SemiBold";
 import TouchablePrimary from "../../components/TouchablePrimary";
 import { DotIndicator } from "react-native-indicators";
 
-const Filter = ({ navigation }) => {
+const Filter = ({ navigation, route }) => {
   const [kategori, setKategori] = useState(null);
   const [urutkan, setUrutkan] = useState(null);
   const [provinsi, setProvinsi] = useState(null);
@@ -23,6 +23,17 @@ const Filter = ({ navigation }) => {
   const [provinsiList, setProvinsiList] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const params = route.params;
+
+  const onSubmit = () => {
+    navigation.push("SearchResult", {
+      min: minimal,
+      max: maximal,
+      Search: params.Search,
+      daerah: provinsi,
+    });
+  };
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -163,7 +174,10 @@ const Filter = ({ navigation }) => {
             </View>
           </View>
           <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>
-            <TouchablePrimary style={{ width: 150, height: 30 }}>
+            <TouchablePrimary
+              style={{ width: 150, height: 30 }}
+              onPress={onSubmit}
+            >
               Pilih
             </TouchablePrimary>
           </View>

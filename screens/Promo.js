@@ -21,7 +21,14 @@ const Promo = ({ navigation }) => {
         setLoading(false);
       })
       .catch((err) => setErr(err.message));
-    return () => abortCont.abort();
+    return () => {
+      if (err.name === "AbortError") {
+        console.log(err.name);
+      } else {
+        setErr(err.message);
+        setLoading(false);
+      }
+    };
   }, []);
 
   return (

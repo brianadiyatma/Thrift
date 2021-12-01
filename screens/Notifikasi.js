@@ -42,26 +42,29 @@ const notifikasi = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Notifikasi</Header2>
       <View style={{ flex: 1 }}>
-        {item.length === 0 && (
+        {!loading && !err && item.length === 0 && (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <SemiBold>Tidak Ada Notifikasi</SemiBold>
           </View>
         )}
-
-        {loading && !err && !item.length === 0 ? (
+        {loading && (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <DotIndicator color="#FF8D44" />
           </View>
-        ) : (
+        )}
+        {loading && !err && !item.length === 0 ? null : (
           <View style={styles.list}>
             {item.map((i) => {
               if (i.destinasi === "chat") {
                 return (
-                  <TouchableOpacity key={i.id}>
+                  <TouchableOpacity
+                    key={i.id}
+                    onPress={() => navigation.navigate("ListScreen")}
+                  >
                     <View
                       key={i.id}
                       style={{

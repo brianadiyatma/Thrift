@@ -34,8 +34,15 @@ const Kategori = ({ route, navigation }) => {
 
   return (
     <View style={styles.screen}>
-      <Header1 navigation={navigation}>Promo</Header1>
-      {loading ? (
+      <Header1 navigation={navigation}>{params.Kategori}</Header1>
+      {err && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <SemiBold style={{ fontSize: 17.5 }}>{err}</SemiBold>
+        </View>
+      )}
+      {loading && !err ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
