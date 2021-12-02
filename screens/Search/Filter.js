@@ -40,7 +40,7 @@ const Filter = ({ navigation, route }) => {
   useEffect(() => {
     const abortCont = new AbortController();
 
-    fetch("https://dev.farizdotid.com/api/daerahindonesia/provinsi", {
+    fetch("https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json", {
       signal: abortCont.signal,
     })
       .then((res) => {
@@ -50,7 +50,8 @@ const Filter = ({ navigation, route }) => {
         return res.json();
       })
       .then((data) => {
-        setProvinsiList(data.provinsi);
+        console.log(data);
+        setProvinsiList(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -139,8 +140,8 @@ const Filter = ({ navigation, route }) => {
                     return (
                       <Picker.Item
                         key={data.id}
-                        label={data.nama}
-                        value={data.nama}
+                        label={data.name}
+                        value={data.name}
                       />
                     );
                   })}

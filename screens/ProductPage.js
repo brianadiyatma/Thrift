@@ -281,7 +281,11 @@ const productPage = ({ route, navigation }) => {
             <View style={styles.buttonContainer}>
               <TouchablePrimary
                 style={{ width: 154, height: 35 }}
-                onPress={() => navigation.navigate("BayarPesanan")}
+                onPress={() =>
+                  navigation.navigate("BayarPesanan", {
+                    id: data.produk.id,
+                  })
+                }
               >
                 Beli
               </TouchablePrimary>

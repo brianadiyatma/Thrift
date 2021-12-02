@@ -14,7 +14,7 @@ import BANK from "../../constants/BANK";
 import { DotIndicator } from "react-native-indicators";
 import TouchablePrimary from "../../components/TouchablePrimary";
 
-const FormKonfirmasi = ({ navigation }) => {
+const FormKonfirmasi = ({ navigation, route }) => {
   const [bank, setBank] = useState(null);
   const [namaRekening, setNamaRekening] = useState(null);
   const [nomorRekening, setNomorRekening] = useState(null);
@@ -22,17 +22,19 @@ const FormKonfirmasi = ({ navigation }) => {
   const [kota, setKota] = useState(null);
   const [alamat, setAlamat] = useState(null);
   const [detail, setDetail] = useState(null);
+  const [nomor, setNomor] = useState(null);
 
   const [provinsiList, setProvinsiList] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [lengkap, setLengkap] = useState(null);
   const [KotaList, setKotaList] = useState(null);
+
+  const params = route.params;
 
   useEffect(() => {
     const abortCont = new AbortController();
-
-    fetch("https://dev.farizdotid.com/api/daerahindonesia/provinsi", {
+    fetch("https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json", {
       signal: abortCont.signal,
     })
       .then((res) => {
@@ -42,8 +44,7 @@ const FormKonfirmasi = ({ navigation }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        setProvinsiList(data.provinsi);
+        setProvinsiList(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -55,10 +56,10 @@ const FormKonfirmasi = ({ navigation }) => {
 
   const fetchKota = (id) => {
     fetch(
-      `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${id}`
+      `https://emsifa.github.io/api-wilayah-indonesia/api/regencies/${id}.json`
     )
       .then((res) => res.json())
-      .then((data) => setKotaList(data.kota_kabupaten));
+      .then((data) => setKotaList(data));
   };
 
   const handleProvinsiChange = (itemValue) => {
@@ -75,10 +76,12 @@ const FormKonfirmasi = ({ navigation }) => {
       {loading && (
         <View
           style={{
+            marginTop: 50,
             width: "100%",
             height: "100%",
             justifyContent: "center",
             alignItems: "center",
+            marginBottom: "auto",
           }}
         >
           <DotIndicator color="#FF8D44" />
@@ -154,7 +157,7 @@ const FormKonfirmasi = ({ navigation }) => {
                 <Picker.Item label="Pilih Provinsi" value={null} />
                 {provinsiList.map((data) => {
                   return (
-                    <Picker.Item key={data.id} label={data.nama} value={data} />
+                    <Picker.Item key={data.id} label={data.name} value={data} />
                   );
                 })}
               </Picker>
@@ -175,7 +178,7 @@ const FormKonfirmasi = ({ navigation }) => {
                     return (
                       <Picker.Item
                         key={data.id}
-                        label={data.nama}
+                        label={data.name}
                         value={data}
                       />
                     );
@@ -199,6 +202,15 @@ const FormKonfirmasi = ({ navigation }) => {
               value={detail}
             />
           </View>
+          <View style={styles.alamat}>
+            <TextInput
+              style={styles.input}
+              placeholder="Nomor Telpon"
+              onChangeText={(text) => setNomor(text)}
+              value={nomor}
+            />
+          </View>
+
           <View
             style={{
               width: "100%",
@@ -209,20 +221,36 @@ const FormKonfirmasi = ({ navigation }) => {
           >
             <TouchablePrimary
               style={styles.konfirmasi}
-              onPress={() =>
-                console.log(
-                  bank,
-                  namaRekening,
-                  nomorRekening,
-                  provinsi,
-                  kota,
-                  alamat,
-                  detail
-                )
-              }
+              onPress={() => {
+                if (
+                  bank &&
+                  namaRekening &&
+                  nomorRekening &&
+                  provinsi &&
+                  kota &&
+                  alamat &&
+                  detail &&
+                  nomor
+                ) {
+                  navigation.navigate("KonfirmasiPesanan", {
+                    ...params,
+                    bank,
+                    namaRekening,
+                    nomorRekening,
+                    provinsi,
+                    kota,
+                    alamat,
+                    detail,
+                    nomor,
+                  });
+                } else {
+                  setLengkap("Lengkapi Data Anda");
+                }
+              }}
             >
               Konfirmasi
             </TouchablePrimary>
+            <SemiBold style={{ color: "#BA0000" }}>{lengkap}</SemiBold>
           </View>
         </View>
       )}
