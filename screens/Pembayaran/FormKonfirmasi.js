@@ -42,6 +42,7 @@ const FormKonfirmasi = ({ navigation }) => {
         return res.json();
       })
       .then((data) => {
+        console.log(data);
         setProvinsiList(data.provinsi);
         setLoading(false);
       })
