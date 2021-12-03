@@ -5,6 +5,7 @@ const Input = (props) => {
   return (
     <View>
       <TextInput
+        value={props.value}
         onChangeText={props.onChangeText}
         style={{ ...styles.input, ...props.style }}
         placeholder={props.placeholder}

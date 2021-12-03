@@ -1,36 +1,117 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Header1 from "../components/Header/Header1";
 import Card from "../components/Card";
+import env from "../constants/env";
+import { DotIndicator } from "react-native-indicators";
+import { AuthContext } from "../auth/context";
+import SemiBold from "../components/SemiBold";
+import TouchablePrimary from "../components/TouchablePrimary";
 
-const Promo = ({ navigation }) => {
-  const [item, setItem] = useState([
-    { nama: "Sepatu Mulus", harga: "500000", id: 1, hargaPromo: 30000 },
-    { nama: "Baju Mulus", harga: "600000", id: 2, hargaPromo: 30000 },
-    { nama: "Jam Mulus", harga: "700000", id: 3, hargaPromo: 30000 },
-    { nama: "Celana Jeans", harga: "800000", id: 5, hargaPromo: 30000 },
-    { nama: "Celana Boxer", harga: "700000", id: 6, hargaPromo: 30000 },
-    { nama: "Celana Dalam", harga: "600000", id: 7, hargaPromo: 30000 },
-    { nama: "Celana Luar", harga: "500000", id: 8, hargaPromo: 30000 },
-  ]);
+const Disukai = ({ navigation }) => {
+  const [item, setItem] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+  const user = useContext(AuthContext);
+  useEffect(() => {
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/wishlist?user_id=${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setErr(err.message);
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      abortCont.abort();
+    };
+  }, []);
+
+  const muatUlang = () => {
+    setLoading(true);
+    fetch(`${env.url}/api/wishlist?user_id=${user.userToken}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setErr(err.message);
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
+        }
+      });
+  };
+  console.log(item);
   return (
     <View style={styles.screen}>
       <Header1 navigation={navigation}>Disukai</Header1>
-      <ScrollView>
-        <View style={styles.product}>
-          {item.map((i) => (
-            <Card
-              key={i.id}
-              id={i.id}
-              nama={i.nama}
-              harga={i.harga}
-              onPress={() => {
-                navigation.navigate("ProductPage");
-              }}
-            />
-          ))}
+      {err && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <SemiBold style={{ fontSize: 17.5 }}>{err}</SemiBold>
         </View>
-      </ScrollView>
+      )}
+      {!loading && !err && item.wishlist.length === 0 && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <SemiBold>Tidak Ada Barang Disukai</SemiBold>
+          <TouchablePrimary
+            style={{ width: 200, height: 40, marginTop: 40 }}
+            onPress={muatUlang}
+          >
+            Muat Ulang
+          </TouchablePrimary>
+        </View>
+      )}
+      {loading && !err ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <DotIndicator color="#FF8D44" />
+        </View>
+      ) : (
+        <ScrollView>
+          <View style={styles.product}>
+            {item.wishlist.map((i) => (
+              <Card
+                key={i.id}
+                id={i.id}
+                hargaPromo={i.produk.promo}
+                nama={i.produk.nama_produk}
+                image={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                harga={i.produk.harga}
+                onPress={() => {
+                  navigation.navigate("ProductPage", {
+                    itemId: i.produk.id,
+                  });
+                }}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -46,4 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Promo;
+export default Disukai;

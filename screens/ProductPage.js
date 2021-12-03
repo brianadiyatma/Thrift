@@ -29,6 +29,7 @@ const productPage = ({ route, navigation }) => {
   const [wishlist, setWihslist] = useState(null);
   const [err, setErr] = useState(null);
   const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
   const [UserPembeli, setUserPembeli] = useState(false);
   const userID = useContext(AuthContext);
 
@@ -41,7 +42,7 @@ const productPage = ({ route, navigation }) => {
       .then((res) => {
         setData(res);
         setLoading(false);
-        if (!res.wishlist === null) {
+        if (res.wishlist) {
           console.log(res);
           setWihslist(res.wishlist.id);
         } else {
@@ -73,7 +74,7 @@ const productPage = ({ route, navigation }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(wishlist);
+          console.log(data);
           if (data.message === "Berhasil Dihapus") {
             setWihslist(null);
             setLoading2(false);
@@ -96,7 +97,7 @@ const productPage = ({ route, navigation }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(wishlist);
+          console.log(data);
           if (data.message === "Sukses") {
             setWihslist(data.data.id);
             setLoading2(false);
@@ -118,6 +119,34 @@ const productPage = ({ route, navigation }) => {
     }
   };
 
+  const onPesan = () => {
+    setLoading3(true);
+    fetch(`${env.url}/api/chat/${data.produk.id}/new`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept":"application/json", //prettier-ignore
+      },
+      body: JSON.stringify({
+        user_id: user.userToken,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setLoading3(false);
+        console.log(res);
+        if (res.status === 200) {
+          navigation.replace("Chat", {
+            id: res.user_chat.id,
+            nama:
+              res.user_chat.penerima_id === user.userToken
+                ? res.user_chat.user.name
+                : res.user_chat.penerima.name,
+          });
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
   return (
     <View style={{ flex: 1 }}>
       {err && (
@@ -268,12 +297,24 @@ const productPage = ({ route, navigation }) => {
                 </TouchableOpacity>
               </View>
               {userID.userToken !== data.produk.id_penjual && (
-                <TouchableOpacity style={{ marginRight: 20 }}>
-                  <Image
-                    style={{ width: 20, height: 20 }}
-                    source={require("../assets/img/icon/Vector1.png")}
-                  />
-                </TouchableOpacity>
+                <View>
+                  {loading3 ? (
+                    <PacmanIndicator
+                      color="#FF8D44"
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <TouchableOpacity
+                      style={{ marginRight: 20 }}
+                      onPress={onPesan}
+                    >
+                      <Image
+                        style={{ width: 20, height: 20 }}
+                        source={require("../assets/img/icon/Vector1.png")}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
             </View>
           </ScrollView>

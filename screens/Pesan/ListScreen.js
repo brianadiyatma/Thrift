@@ -10,33 +10,95 @@ const ListScreen = ({ navigation }) => {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [firstTime, setFirstTime] = useState(true);
+  const user = useContext(AuthContext);
+  useEffect(() => {
+    if (firstTime) {
+      setFirstTime(false);
+    }
+    const abortCont = new AbortController();
+    const { signal } = abortCont;
+    const fetchData = setInterval(() => {
+      fetch(`${env.url}/api/chat/${user.userToken}`, {
+        signal: signal,
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setItem(res);
+          setLoading(false);
+        })
+        .catch((err) => {
+          if (err.name === "AbortError") {
+            console.log(err.name);
+          } else {
+            setErr(err.message);
+            setLoading(false);
+          }
+        });
+    }, 5000);
+    return () => {
+      clearInterval(fetchData);
+      abortCont.abort();
 
+    };
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Pesan</Header2>
       <View style={{ flex: 1 }}>
         <View style={styles.list}>
-          <TouchableOpacity
-            key={1}
-            onPress={() =>
-              navigation.navigate("Chat", { id: 1, nama: "Nabil Islam" })
-            }
-          >
+          {loading ? (
             <View
-              key={1}
               style={{
-                flexDirection: "row",
-                margin: 12,
-                height: 50,
+                marginTop: 50,
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <View style={{ marginLeft: 25 }}>
-                <SemiBold style={{ fontSize: 16 }}>"Nabil Islam"</SemiBold>
-                <SemiBold>Apakah barang ini bisa kurang ?</SemiBold>
-              </View>
+              <DotIndicator color="#FF8D44" />
             </View>
-            <View style={{ borderBottomWidth: 1, borderColor: "black" }}></View>
-          </TouchableOpacity>
+          ) : (
+            <View>
+              {item.userChat.map((i, j) => (
+                <TouchableOpacity
+                  key={i.id}
+                  onPress={() =>
+                    navigation.replace("Chat", {
+                      id: i.id,
+                      nama:
+                        i.penerima_id === user.userToken
+                          ? i.user.name
+                          : i.penerima.name,
+                    })
+                  }
+                >
+                  <View
+                    key={i.id}
+                    style={{
+                      flexDirection: "row",
+                      margin: 12,
+                      height: 50,
+                    }}
+                  >
+                    <View style={{ marginLeft: 25 }}>
+                      <SemiBold style={{ fontSize: 16 }}>
+                        {i.penerima_id === user.userToken
+                          ? i.user.name
+                          : i.penerima.name}
+                      </SemiBold>
+                      <SemiBold style={{ fontSize: 12, marginTop: 10 }}>
+                        {item.message[j].pesan}
+                      </SemiBold>
+                    </View>
+                  </View>
+                  <View
+                    style={{ borderBottomWidth: 1, borderColor: "black" }}
+                  ></View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
       </View>
     </View>
