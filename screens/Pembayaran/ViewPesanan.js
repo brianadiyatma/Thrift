@@ -13,43 +13,10 @@ const format = (amount) => {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-const KonfirmasiPesanan = ({ navigation, route }) => {
+const ViewPesanan = ({ navigation, route }) => {
   const params = route.params;
-  const user = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [metode, setMetode] = useState(
-    params.pemesanan.pembayaran.metode_bayar
-  );
-  const [err, setErr] = useState(null);
-  const onKonfirmasi = () => {
-    setLoading(true);
-    fetch(`${env.url}/api/pembayaran/${params.pemesanan.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: user.userToken,
-        nama_bank: params.bank,
-        nomor_rekening: params.nomorRekening,
-        nama: params.namaRekening,
-        alamat: `${params.alamat}, ${params.detail}`,
-        provinsi: params.provinsi.name,
-        kota: params.kota.name,
-        tel: params.nomor,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Berhasil") {
-          navigation.popToTop();
-        } else {
-          const res = Object.values(data.error);
-          setErr(res[0][0]);
-        }
-      })
-      .catch((err) => setErr(err.message));
-  };
+  const [metode, setMetode] = useState(params.metode_bayar);
+
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Pembayaran</Header2>
@@ -60,10 +27,10 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
             {params.namaRekening}
           </Text>
           <Text style={{ fontFamily: "LGC-Bold", color: "#746F6C" }}>
-            {params.alamat}, {params.detail}
+            {params.alamat}
           </Text>
           <Text style={{ fontFamily: "LGC-Bold", color: "#746F6C" }}>
-            {params.provinsi.name}, {params.kota.name}
+            {params.kota}, {params.provinsi}
           </Text>
           <Text style={{ fontFamily: "LGC-Bold", color: "#746F6C" }}>
             {params.nomor}
@@ -82,17 +49,17 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
               <View style={{ width: 120, flexDirection: "row" }}>
                 <Image
                   source={{
-                    uri: `${env.url}/assets/img/uploads/produk/${params.pemesanan.produk.foto}`,
+                    uri: `${env.url}/assets/img/uploads/produk/${params.foto}`,
                     width: 72,
                     height: 72,
                   }}
                 />
                 <View style={{ width: 190, paddingLeft: 20 }}>
-                  <SemiBold>{params.pemesanan.produk.nama_produk}</SemiBold>
+                  <SemiBold>{params.nama_produk}</SemiBold>
                 </View>
                 <Price>
                   Rp.
-                  {format(params.pemesanan.pembayaran.total - 22500)}
+                  {format(params.total - 22500)}
                 </Price>
               </View>
             </View>
@@ -165,44 +132,12 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
             <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
           </View>
           <View style={{ width: 120, paddingLeft: 20 }}>
-            <Price>{format(params.pemesanan.pembayaran.total - 22500)}</Price>
+            <Price>{format(params.total - 22500)}</Price>
             <Price>{format(20000)}</Price>
             <Price>{format(2500)}</Price>
-            <Price>{format(params.pemesanan.pembayaran.total)}</Price>
+            <Price>{format(params.total)}</Price>
           </View>
         </View>
-        {loading ? (
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <DotIndicator color="#FF8D44" />
-          </View>
-        ) : (
-          <View
-            style={{
-              marginTop: 20,
-              marginLeft: 10,
-              marginRight: 10,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <TouchablePrimary
-              style={{ width: 180, height: 30, backgroundColor: "#BA0000" }}
-            >
-              Pembatalan
-            </TouchablePrimary>
-            <TouchablePrimary
-              style={{ width: 180, height: 30 }}
-              onPress={onKonfirmasi}
-            >
-              Konfirmasi
-            </TouchablePrimary>
-          </View>
-        )}
-        <SemiBold style={{ textAlign: "center", color: "red", marginTop: 15 }}>
-          {err}
-        </SemiBold>
       </ScrollView>
     </View>
   );
@@ -229,4 +164,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-export default KonfirmasiPesanan;
+export default ViewPesanan;

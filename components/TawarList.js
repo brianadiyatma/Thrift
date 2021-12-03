@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-const ProductList = (props) => {
+const TawarList = (props) => {
   return (
     <View style={styles.screen}>
       <Image
@@ -25,16 +25,18 @@ const ProductList = (props) => {
         </Text>
       </View>
       <View style={styles.detail}>
-        <TouchableOpacity onPress={props.onPress}>
-          <Text
-            style={{
-              ...styles.productTitle,
-              fontSize: 16,
-            }}
-          >
-            Detail
-          </Text>
-        </TouchableOpacity>
+        {props.detail ? (
+          <TouchableOpacity onPress={props.onPress}>
+            <Text
+              style={{
+                ...styles.productTitle,
+                fontSize: 16,
+              }}
+            >
+              Detail
+            </Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
@@ -58,4 +60,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
-export default ProductList;
+export default TawarList;

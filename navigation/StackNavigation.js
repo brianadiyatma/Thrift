@@ -23,6 +23,9 @@ import Chat from "../screens/Pesan/Chat";
 import Bantuan from "../screens/Akun/Bantuan";
 import Panduan from "../screens/Pembayaran/Panduan";
 import KonfirmasiPesanan from "../screens/Pembayaran/KonfirmasiPesanan";
+import ViewPesanan from "../screens/Pembayaran/ViewPesanan";
+import KonfirmasiPaket from "../screens/Pembayaran/KonfirmasiPaket";
+import Rating from "../screens/Pembayaran/Rating";
 
 const Stack = createNativeStackNavigator();
 const stackNavigation = () => {
@@ -52,6 +55,9 @@ const stackNavigation = () => {
       <Stack.Screen name="Bantuan" component={Bantuan} />
       <Stack.Screen name="Panduan" component={Panduan} />
       <Stack.Screen name="KonfirmasiPesanan" component={KonfirmasiPesanan} />
+      <Stack.Screen name="ViewPesanan" component={ViewPesanan} />
+      <Stack.Screen name="KonfirmasiPaket" component={KonfirmasiPaket} />
+      <Stack.Screen name="Rating" component={Rating} />
     </Stack.Navigator>
   );
 };

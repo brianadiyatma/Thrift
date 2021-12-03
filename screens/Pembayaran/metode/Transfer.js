@@ -37,7 +37,7 @@ const Transfer = ({ navigation, route }) => {
   }, []);
   return (
     <View style={{ flex: 1 }}>
-      <Header2 onPress={() => navigation.goBack()}>Pembayaran</Header2>
+      <Header2 onPress={() => navigation.popToTop()}>Pembayaran</Header2>
       {loading ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}

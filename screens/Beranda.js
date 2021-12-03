@@ -182,7 +182,9 @@ const Beranda = ({ navigation }) => {
                 <View style={{ width: 90 }}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("Kategori", { Kategori: "Jam" });
+                      navigation.navigate("Kategori", {
+                        Kategori: "Jam Tangan",
+                      });
                     }}
                   >
                     <Image

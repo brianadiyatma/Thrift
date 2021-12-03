@@ -1,21 +1,89 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Header2 from "../../../components/Header/Header2";
-import ProductList from "../../../components/ProductList";
+
+import { DotIndicator } from "react-native-indicators";
+import { AuthContext } from "../../../auth/context";
+import env from "../../../constants/env";
+import SemiBold from "../../../components/SemiBold";
+import TawarList from "../../../components/TawarList";
 
 const Penawaran = ({ navigation }) => {
+  const user = useContext(AuthContext);
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+  useEffect(() => {
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/penawaran?user_id=${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
+        }
+      });
+    return () => abortCont.abort();
+  }, []);
+  console.log(item);
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Penawaran</Header2>
-      <View style={{ marginTop: 45 }}>
-        <ProductList
-          imgurl="https://assets.ajio.com/medias/sys_master/root/h5a/h59/13018715881502/-1117Wx1400H-460342492-blue-MODEL.jpg"
-          status="Konfirmasi Admin"
-          statusColor="green"
+      {!loading && item.tawar.length === 0 && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          Sepatu Nike
-        </ProductList>
-      </View>
+          <SemiBold>Tidak Ada Penawaran</SemiBold>
+        </View>
+      )}
+      {loading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <DotIndicator color="#FF8D44" />
+        </View>
+      ) : (
+        item.tawar.map((i) => {
+          if (i.status === "Proses") {
+            return (
+              <View style={{ marginTop: 45 }} key={i.id}>
+                <TawarList
+                  imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                  status={i.status}
+                  statusColor="black"
+                  detail={false}
+                >
+                  {i.produk.nama_produk}
+                </TawarList>
+              </View>
+            );
+          } else if (i.status === "Diterima") {
+            return (
+              <View style={{ marginTop: 45 }} key={i.id}>
+                <TawarList
+                  imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                  status={i.status}
+                  statusColor="green"
+                  detail={true}
+                  onPress={() =>
+                    navigation.navigate("BayarPesanan", { id: i.produk.id })
+                  }
+                >
+                  {i.produk.nama_produk}
+                </TawarList>
+              </View>
+            );
+          }
+        })
+      )}
     </View>
   );
 };

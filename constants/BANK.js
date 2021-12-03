@@ -4,6 +4,10 @@ export default [
     code: "002",
   },
   {
+    name: "QRIS",
+    code: "666",
+  },
+  {
     name: "BANK EKSPOR INDONESIA",
     code: "003",
   },
