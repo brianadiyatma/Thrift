@@ -11,8 +11,18 @@ const notifikasi = ({ navigation }) => {
 
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState(null);
 
+  const [err, setErr] = useState(null);
+  const onPress = (id, destination) => {
+    navigation.navigate(destination);
+    setLoading(true);
+    fetch(`${env.url}/api/notif/${id}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setLoading(false);
+      });
+  };
   useEffect(() => {
     const abortCont = new AbortController();
     const { signal } = abortCont;
@@ -56,59 +66,92 @@ const notifikasi = ({ navigation }) => {
             <DotIndicator color="#FF8D44" />
           </View>
         )}
-        {loading && !err && !item.length === 0 ? null : (
-          <View style={styles.list}>
-            {item.map((i) => {
-              if (i.destinasi === "chat") {
-                return (
-                  <TouchableOpacity
-                    key={i.id}
-                    onPress={() => navigation.navigate("ListScreen")}
-                  >
-                    <View
+        {!loading && !err && !item.length === 0 ? null : (
+          <View>
+            <View style={styles.list}>
+              {item.map((i, j) => {
+                if (i.destinasi === "chat") {
+                  return (
+                    <TouchableOpacity
                       key={i.id}
-                      style={{
-                        flexDirection: "row",
-                        margin: 12,
-                        height: 50,
+                      onPress={() => {
+                        item.splice(j, 1);
+                        onPress(i.id, "ListScreen");
                       }}
                     >
-                      <View style={{ marginLeft: 25 }}>
-                        <SemiBold style={{ fontSize: 16 }}>
-                          {i.subjudul}
-                        </SemiBold>
-                        <SemiBold>{i.pesan}</SemiBold>
+                      <View
+                        key={i.id}
+                        style={{
+                          flexDirection: "row",
+                          margin: 12,
+                          height: 50,
+                        }}
+                      >
+                        <View style={{ marginLeft: 25 }}>
+                          <SemiBold style={{ fontSize: 16 }}>
+                            {i.subjudul}
+                          </SemiBold>
+                          <SemiBold>{i.pesan}</SemiBold>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{ borderBottomWidth: 0.5, borderColor: "black" }}
-                    ></View>
-                  </TouchableOpacity>
-                );
-              } else if (i.destinasi === "penawaran") {
-                return (
-                  <TouchableOpacity
-                    key={i.id}
-                    onPress={() => navigation.navigate("Penawaran")}
-                  >
-                    <View
+                      <View
+                        style={{ borderBottomWidth: 0.5, borderColor: "black" }}
+                      ></View>
+                    </TouchableOpacity>
+                  );
+                } else if (i.destinasi === "riwayat") {
+                  return (
+                    <TouchableOpacity
                       key={i.id}
-                      style={{ flexDirection: "row", margin: 12, height: 50 }}
+                      onPress={() => {
+                        item.splice(j, 1);
+                        onPress(i.id, "ListScreen");
+                      }}
                     >
-                      <View style={{ marginLeft: 25 }}>
-                        <SemiBold style={{ fontSize: 16 }}>
-                          {i.subjudul}
-                        </SemiBold>
-                        <SemiBold>{i.pesan}</SemiBold>
+                      <View
+                        key={i.id}
+                        style={{ flexDirection: "row", margin: 12, height: 50 }}
+                      >
+                        <View style={{ marginLeft: 25 }}>
+                          <SemiBold style={{ fontSize: 16 }}>
+                            {i.subjudul}
+                          </SemiBold>
+                          <SemiBold>{i.pesan}</SemiBold>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{ borderBottomWidth: 0.5, borderColor: "black" }}
-                    ></View>
-                  </TouchableOpacity>
-                );
-              }
-            })}
+                      <View
+                        style={{ borderBottomWidth: 0.5, borderColor: "black" }}
+                      ></View>
+                    </TouchableOpacity>
+                  );
+                } else {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        item.splice(j, 1);
+                        onPress(i.id, "Web");
+                      }}
+                      key={i.id}
+                    >
+                      <View
+                        key={i.id}
+                        style={{ flexDirection: "row", margin: 12, height: 50 }}
+                      >
+                        <View style={{ marginLeft: 25 }}>
+                          <SemiBold style={{ fontSize: 16 }}>
+                            {i.subjudul}
+                          </SemiBold>
+                          <SemiBold>{i.pesan}</SemiBold>
+                        </View>
+                      </View>
+                      <View
+                        style={{ borderBottomWidth: 0.5, borderColor: "black" }}
+                      ></View>
+                    </TouchableOpacity>
+                  );
+                }
+              })}
+            </View>
           </View>
         )}
       </View>

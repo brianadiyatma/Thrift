@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import SemiBold from "../../components/SemiBold";
 import Header2 from "../../components/Header/Header2";
 import env from "../../constants/env";
@@ -39,13 +46,13 @@ const ListScreen = ({ navigation }) => {
     return () => {
       clearInterval(fetchData);
       abortCont.abort();
-
     };
   }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Pesan</Header2>
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.list}>
           {loading ? (
             <View
@@ -67,7 +74,7 @@ const ListScreen = ({ navigation }) => {
                     navigation.replace("Chat", {
                       id: i.id,
                       nama:
-                        i.penerima_id === user.userToken
+                        i.penerima_id == user.userToken
                           ? i.user.name
                           : i.penerima.name,
                     })
@@ -83,12 +90,14 @@ const ListScreen = ({ navigation }) => {
                   >
                     <View style={{ marginLeft: 25 }}>
                       <SemiBold style={{ fontSize: 16 }}>
-                        {i.penerima_id === user.userToken
+                        {i.penerima_id == user.userToken
                           ? i.user.name
                           : i.penerima.name}
                       </SemiBold>
                       <SemiBold style={{ fontSize: 12, marginTop: 10 }}>
-                        {item.message[j].pesan}
+                        {item.message[j] === null
+                          ? null
+                          : item.message[j].pesan}
                       </SemiBold>
                     </View>
                   </View>
@@ -100,7 +109,7 @@ const ListScreen = ({ navigation }) => {
             </View>
           )}
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

@@ -164,7 +164,7 @@ const Beranda = ({ navigation }) => {
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("Kategori", {
-                        Kategori: "Baju Pria",
+                        Kategori: "Baju",
                       });
                     }}
                   >
@@ -241,7 +241,7 @@ const Beranda = ({ navigation }) => {
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("Kategori", {
-                        Kategori: "Kendaraan",
+                        Kategori: "Sparepart",
                       });
                     }}
                   >

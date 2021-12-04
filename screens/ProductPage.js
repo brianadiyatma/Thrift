@@ -17,6 +17,7 @@ import asset from "../components/asset";
 import env from "../constants/env";
 import { DotIndicator, PacmanIndicator } from "react-native-indicators";
 import { AuthContext } from "../auth/context";
+import Stars from "react-native-stars";
 
 function format(amount) {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -43,7 +44,6 @@ const productPage = ({ route, navigation }) => {
         setData(res);
         setLoading(false);
         if (res.wishlist) {
-          console.log(res);
           setWihslist(res.wishlist.id);
         } else {
           setWihslist(null);
@@ -53,13 +53,11 @@ const productPage = ({ route, navigation }) => {
         }
       })
       .catch((err) => {
-        {
-          if (err.name === "AbortError") {
-            console.log(err.name);
-          } else {
-            setErr(err.message);
-            setLoading(false);
-          }
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setLoading(false);
         }
       });
 
@@ -74,7 +72,6 @@ const productPage = ({ route, navigation }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.message === "Berhasil Dihapus") {
             setWihslist(null);
             setLoading2(false);
@@ -97,7 +94,6 @@ const productPage = ({ route, navigation }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.message === "Sukses") {
             setWihslist(data.data.id);
             setLoading2(false);
@@ -134,7 +130,7 @@ const productPage = ({ route, navigation }) => {
       .then((res) => res.json())
       .then((res) => {
         setLoading3(false);
-        console.log(res);
+
         if (res.status === 200) {
           navigation.replace("Chat", {
             id: res.user_chat.id,
@@ -293,6 +289,25 @@ const productPage = ({ route, navigation }) => {
                     <Medium style={{ marginTop: 5 }}>
                       @{data.produk.user.username}
                     </Medium>
+                  </View>
+                  <View style={{ marginTop: 10 }}>
+                    <Stars
+                      display={
+                        data.produk.user.review.length === 0
+                          ? 0
+                          : data.produk.user.review.reduce(
+                              (a, b) => a + Number(b.rating),
+                              0
+                            ) / data.produk.user.review.length
+                      }
+                      disabled={true}
+                      spacing={2}
+                      count={5}
+                      starSize={16}
+                      fullStar={require("../assets/img/icon/star/fill.png")}
+                      halfStar={require("../assets/img/icon/star/half.png")}
+                      emptyStar={require("../assets/img/icon/star/border.png")}
+                    />
                   </View>
                 </TouchableOpacity>
               </View>

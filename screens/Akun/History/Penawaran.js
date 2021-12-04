@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import Header2 from "../../../components/Header/Header2";
 
 import { DotIndicator } from "react-native-indicators";
@@ -33,57 +33,67 @@ const Penawaran = ({ navigation }) => {
       });
     return () => abortCont.abort();
   }, []);
-  console.log(item);
+
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Penawaran</Header2>
-      {!loading && item.tawar.length === 0 && (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <SemiBold>Tidak Ada Penawaran</SemiBold>
-        </View>
-      )}
-      {loading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <DotIndicator color="#FF8D44" />
-        </View>
-      ) : (
-        item.tawar.map((i) => {
-          if (i.status === "Proses") {
-            return (
-              <View style={{ marginTop: 45 }} key={i.id}>
-                <TawarList
-                  imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
-                  status={i.status}
-                  statusColor="black"
-                  detail={false}
-                >
-                  {i.produk.nama_produk}
-                </TawarList>
-              </View>
-            );
-          } else if (i.status === "Diterima") {
-            return (
-              <View style={{ marginTop: 45 }} key={i.id}>
-                <TawarList
-                  imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
-                  status={i.status}
-                  statusColor="green"
-                  detail={true}
-                  onPress={() =>
-                    navigation.navigate("BayarPesanan", { id: i.produk.id })
-                  }
-                >
-                  {i.produk.nama_produk}
-                </TawarList>
-              </View>
-            );
-          }
-        })
-      )}
+      <View style={{ flex: 1 }}>
+        {!loading && item.tawar.length === 0 && (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <SemiBold>Tidak Ada Penawaran</SemiBold>
+          </View>
+        )}
+        {loading && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <DotIndicator color="#FF8D44" />
+          </View>
+        )}
+
+        {!loading && (
+          <ScrollView>
+            {item.tawar.map((i) => {
+              if (i.status === "Proses") {
+                return (
+                  <View style={{ marginTop: 45 }} key={i.id}>
+                    <TawarList
+                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      status={i.status}
+                      statusColor="black"
+                      detail={false}
+                    >
+                      {i.produk.nama_produk}
+                    </TawarList>
+                  </View>
+                );
+              } else if (i.status === "Diterima") {
+                return (
+                  <View style={{ marginTop: 45 }} key={i.id}>
+                    <TawarList
+                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      status={i.status}
+                      statusColor="green"
+                      detail={true}
+                      onPress={() =>
+                        navigation.navigate("BayarPesanan", { id: i.produk.id })
+                      }
+                    >
+                      {i.produk.nama_produk}
+                    </TawarList>
+                  </View>
+                );
+              }
+            })}
+          </ScrollView>
+        )}
+      </View>
     </View>
   );
 };

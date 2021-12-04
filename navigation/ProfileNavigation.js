@@ -6,34 +6,33 @@ import SemiBold from "../components/SemiBold";
 import COLOR from "../constants/COLOR";
 import Card from "../components/Card";
 import Stars from "react-native-stars";
+import env from "../constants/env";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ProfileNavigation = (route, props) => {
-  const [item, setItem] = useState([
-    { nama: "Sepatu Mulus", harga: "500000", id: 1, hargaPromo: 30000 },
-    { nama: "Baju Mulus", harga: "600000", id: 2, hargaPromo: 30000 },
-    { nama: "Jam Mulus", harga: "700000", id: 3, hargaPromo: 30000 },
-    { nama: "Celana Jeans", harga: "800000", id: 5, hargaPromo: 30000 },
-    { nama: "Celana Boxer", harga: "700000", id: 6, hargaPromo: 30000 },
-    { nama: "Celana Dalam", harga: "600000", id: 7, hargaPromo: 30000 },
-    { nama: "Celana Luar", harga: "500000", id: 8, hargaPromo: 30000 },
-  ]);
-
-
+const ProfileNavigation = ({ data }) => {
   const Produk = ({ navigation }) => {
     return (
       <View style={styles.screen}>
         <ScrollView>
           <View style={styles.product}>
-            {item.map((i) => (
+            {data.produk.length === 0 && (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <SemiBold>Tidak Ada review</SemiBold>
+              </View>
+            )}
+            {data.produk.map((i) => (
               <Card
                 key={i.id}
                 id={i.id}
-                nama={i.nama}
+                hargaPromo={i.promo}
+                nama={i.nama_produk}
+                image={`${env.url}/assets/img/uploads/produk/${i.foto}`}
                 harga={i.harga}
                 onPress={() => {
-                  navigation.navigate("ProductPage");
+                  navigation.navigate("ProductPage", {
+                    itemId: i.id,
+                  });
                 }}
               />
             ))}
@@ -53,44 +52,58 @@ const ProfileNavigation = (route, props) => {
         }}
       >
         <View style={{ marginTop: 20 }}></View>
-        <View
-          style={{
-            paddingLeft: 30,
-            borderBottomColor: "#e1e1e1",
-            borderBottomWidth: 0.5,
-            height: 120,
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={require("../assets/img/Product/Sepatu.png")}
+        <View style={{ flex: 1 }}>
+          {data.review.length === 0 && (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <SemiBold>Tidak Ada review</SemiBold>
+            </View>
+          )}
+          {data.review.map((i, j) => (
+            <View
+              key={j}
               style={{
-                width: 65,
-                height: 65,
-                borderRadius: 65 / 2,
-                overflow: "hidden",
+                paddingLeft: 30,
+                borderBottomColor: "#e1e1e1",
+                borderBottomWidth: 0.5,
+                height: 150,
               }}
-            />
-            <View style={{ alignItems: "flex-start", marginLeft: 20 }}>
-              <SemiBold style={{ fontSize: 17 }}>Sepatu Nike</SemiBold>
-              <View style={{ marginTop: 8 }}>
-                <Stars
-                  display={2}
-                  spacing={2}
-                  count={5}
-                  starSize={16}
-                  fullStar={require("../assets/img/icon/star/fill.png")}
-                  emptyStar={require("../assets/img/icon/star/border.png")}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Image
+                  source={{
+                    uri: `${env.url}/assets/img/uploads/produk/${i.produk.foto}`,
+                    width: 65,
+                    height: 65,
+                  }}
+                  style={{
+                    borderRadius: 65 / 2,
+                    overflow: "hidden",
+                  }}
                 />
+                <View style={{ alignItems: "flex-start", marginLeft: 20 }}>
+                  <SemiBold style={{ fontSize: 17 }}>
+                    {i.produk.nama_produk}
+                  </SemiBold>
+                  <View style={{ marginTop: 8 }}>
+                    <Stars
+                      display={Number(i.rating)}
+                      spacing={2}
+                      count={5}
+                      starSize={16}
+                      fullStar={require("../assets/img/icon/star/fill.png")}
+                      emptyStar={require("../assets/img/icon/star/border.png")}
+                    />
+                  </View>
+                  <SemiBold style={{ fontSize: 12, marginTop: 8 }}>
+                    @{i.user.username}
+                  </SemiBold>
+                </View>
               </View>
-              <SemiBold style={{ fontSize: 12, marginTop: 8 }}>
-                @Winston Churcill
+              <SemiBold style={{ fontFamily: "LGC-Bold", marginTop: 20 }}>
+                {i.review}
               </SemiBold>
             </View>
-          </View>
-          <SemiBold style={{ fontFamily: "LGC-Bold", marginTop: 20 }}>
-            Sepatu Bagus Mulus Semoga awet
-          </SemiBold>
+          ))}
         </View>
       </ScrollView>
     );
@@ -106,7 +119,7 @@ const ProfileNavigation = (route, props) => {
       <View>
         <Image
           source={{
-            uri: "https://www.mapquestapi.com/staticmap/v5/map?locations=-7.6481360539638645,%20111.528595403975&size=@2x&key=3qK97t0M46g8eQsMj8k7iYJF1epq2LMH",
+            uri: `https://www.mapquestapi.com/staticmap/v5/map?locations=${data.lat},%20${data.lng}&size=@2x&key=3qK97t0M46g8eQsMj8k7iYJF1epq2LMH`,
             width: 420,
             height: 420,
           }}
@@ -130,7 +143,27 @@ const ProfileNavigation = (route, props) => {
     >
       <Tab.Screen name="Produk" component={Produk} />
       <Tab.Screen name="Review" component={Review} />
-      <Tab.Screen name="Lokasi" component={Maps} />
+      <Tab.Screen
+        name="Lokasi"
+        component={Maps}
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
+              <Image
+                resizeMode="contain"
+                source={require("../assets/img/icon/SVG/Lokasi.png")}
+                style={{
+                  width: 20,
+                  height: 20,
+                  tintColor: focused ? COLOR.primary : COLOR.black,
+                  marginBottom: 5,
+                }}
+              />
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

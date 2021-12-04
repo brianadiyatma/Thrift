@@ -26,7 +26,7 @@ import KonfirmasiPesanan from "../screens/Pembayaran/KonfirmasiPesanan";
 import ViewPesanan from "../screens/Pembayaran/ViewPesanan";
 import KonfirmasiPaket from "../screens/Pembayaran/KonfirmasiPaket";
 import Rating from "../screens/Pembayaran/Rating";
-
+import Web from "../screens/Web";
 const Stack = createNativeStackNavigator();
 const stackNavigation = () => {
   return (
@@ -58,6 +58,7 @@ const stackNavigation = () => {
       <Stack.Screen name="ViewPesanan" component={ViewPesanan} />
       <Stack.Screen name="KonfirmasiPaket" component={KonfirmasiPaket} />
       <Stack.Screen name="Rating" component={Rating} />
+      <Stack.Screen name="Web" component={Web} />
     </Stack.Navigator>
   );
 };
