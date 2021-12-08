@@ -67,7 +67,7 @@ const ProfilePenjual = ({ navigation, route }) => {
               <Image
                 style={styles.profileImage}
                 source={{
-                  uri: `${env.url}/assets/img/uploads/profile_images/${profile.photo}`,
+                  uri: `${profile.url}`,
                   width: 85,
                   height: 85,
                 }}

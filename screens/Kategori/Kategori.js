@@ -65,7 +65,7 @@ const Kategori = ({ route, navigation }) => {
                 id={i.id}
                 hargaPromo={i.promo}
                 nama={i.nama_produk}
-                image={`${env.url}/assets/img/uploads/produk/${i.foto}`}
+                image={`${i.url}`}
                 harga={i.harga}
                 onPress={() => {
                   navigation.navigate("ProductPage", {

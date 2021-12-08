@@ -62,7 +62,7 @@ const Pemesanan = ({ navigation }) => {
                 return (
                   <View style={{ marginTop: 45 }} key={i.id}>
                     <ProductList
-                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
                       statusColor="black"
                       onPress={() =>
@@ -71,7 +71,7 @@ const Pemesanan = ({ navigation }) => {
                           alamat: i.pembayaran.alamat,
                           kota: i.pembayaran.provinsi,
                           nomor: i.pembayaran.tel,
-                          foto: i.produk.foto,
+                          foto: i.produk.url,
                           nama_produk: i.produk.nama_produk,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,
@@ -86,7 +86,7 @@ const Pemesanan = ({ navigation }) => {
                 return (
                   <View style={{ marginTop: 45 }} key={i.id}>
                     <ProductList
-                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
                       statusColor="black"
                       onPress={() => {
@@ -105,7 +105,7 @@ const Pemesanan = ({ navigation }) => {
                 return (
                   <View style={{ marginTop: 45 }} key={i.id}>
                     <ProductList
-                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
                       statusColor="black"
                       onPress={() =>
@@ -115,7 +115,7 @@ const Pemesanan = ({ navigation }) => {
                           alamat: i.pembayaran.alamat,
                           kota: i.pembayaran.provinsi,
                           nomor: i.pembayaran.tel,
-                          foto: i.produk.foto,
+                          foto: i.produk.url,
                           nama_produk: i.produk.nama_produk,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,

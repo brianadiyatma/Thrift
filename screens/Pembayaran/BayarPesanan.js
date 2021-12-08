@@ -115,7 +115,7 @@ const BayarPesanan = ({ navigation, route }) => {
                 <View style={{ width: 120, flexDirection: "row" }}>
                   <Image
                     source={{
-                      uri: `${env.url}/assets/img/uploads/produk/${data.produk.foto}`,
+                      uri: `${data.produk.url}`,
                       width: 72,
                       height: 72,
                     }}

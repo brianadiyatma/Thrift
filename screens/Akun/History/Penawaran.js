@@ -64,7 +64,7 @@ const Penawaran = ({ navigation }) => {
                 return (
                   <View style={{ marginTop: 45 }} key={i.id}>
                     <TawarList
-                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      imgurl={`${i.produk.url}`}
                       status={i.status}
                       statusColor="black"
                       detail={false}
@@ -77,7 +77,7 @@ const Penawaran = ({ navigation }) => {
                 return (
                   <View style={{ marginTop: 45 }} key={i.id}>
                     <TawarList
-                      imgurl={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                      imgurl={`${i.produk.url}`}
                       status={i.status}
                       statusColor="green"
                       detail={true}

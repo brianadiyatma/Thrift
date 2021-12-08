@@ -137,7 +137,7 @@ const SearchResult = ({ navigation, route }) => {
                   id={i.id}
                   hargaPromo={i.promo}
                   nama={i.nama_produk}
-                  image={`${env.url}/assets/img/uploads/produk/${i.foto}`}
+                  image={`${i.url}`}
                   harga={i.harga}
                   onPress={() => {
                     navigation.navigate("ProductPage", {

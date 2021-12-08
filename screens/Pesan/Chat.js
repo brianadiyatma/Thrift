@@ -72,7 +72,7 @@ const Chat = ({ navigation, route }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: 9,
+        user_id: user.userToken,
         pesan: ketik,
       }),
     })

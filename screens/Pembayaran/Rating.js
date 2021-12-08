@@ -37,7 +37,7 @@ const Rating = ({ navigation, route }) => {
           console.log("Berhasil lurd");
           setTimeout(() => {
             setLoading(false);
-            navigation.popToTop();
+            navigation.navigate("SuccessReview");
           }, 2000);
         }
       })

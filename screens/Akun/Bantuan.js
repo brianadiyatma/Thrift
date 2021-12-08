@@ -34,7 +34,7 @@ const Bantuan = ({ navigation }) => {
           console.log("Berhasil lurd");
           setTimeout(() => {
             setLoading(false);
-            navigation.popToTop();
+            navigation.navigate("SuccessBantuan");
           }, 2000);
         }
       })

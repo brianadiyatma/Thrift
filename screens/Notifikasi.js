@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import SemiBold from "../components/SemiBold";
 import Header2 from "../components/Header/Header2";
 import env from "../constants/env";

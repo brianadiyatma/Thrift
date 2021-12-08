@@ -46,7 +46,7 @@ const KonfirmasiPaket = ({ navigation, route }) => {
               <View style={{ width: 120, flexDirection: "row" }}>
                 <Image
                   source={{
-                    uri: `${env.url}/assets/img/uploads/produk/${params.foto}`,
+                    uri: `${params.foto}`,
                     width: 72,
                     height: 72,
                   }}

@@ -50,6 +50,28 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
       })
       .catch((err) => setErr(err.message));
   };
+  const onBatal = () => {
+    setLoading(true);
+    fetch(`${env.url}/api/pembayaran/${params.pemesanan.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: user.userToken,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status == 200) {
+          navigation.popToTop();
+        } else {
+          const res = Object.values(data.error);
+          setErr(res[0][0]);
+        }
+      })
+      .catch((err) => setErr(err.message));
+  };
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Pembayaran</Header2>
@@ -82,7 +104,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
               <View style={{ width: 120, flexDirection: "row" }}>
                 <Image
                   source={{
-                    uri: `${env.url}/assets/img/uploads/produk/${params.pemesanan.produk.foto}`,
+                    uri: `${params.pemesanan.produk.url}`,
                     width: 72,
                     height: 72,
                   }}
@@ -189,6 +211,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
           >
             <TouchablePrimary
               style={{ width: 180, height: 30, backgroundColor: "#BA0000" }}
+              onPress={onBatal}
             >
               Pembatalan
             </TouchablePrimary>

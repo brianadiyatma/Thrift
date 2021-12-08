@@ -27,7 +27,7 @@ const ProfileNavigation = ({ data }) => {
                 id={i.id}
                 hargaPromo={i.promo}
                 nama={i.nama_produk}
-                image={`${env.url}/assets/img/uploads/produk/${i.foto}`}
+                image={`${i.url}`}
                 harga={i.harga}
                 onPress={() => {
                   navigation.navigate("ProductPage", {
@@ -71,7 +71,7 @@ const ProfileNavigation = ({ data }) => {
               <View style={{ flexDirection: "row" }}>
                 <Image
                   source={{
-                    uri: `${env.url}/assets/img/uploads/produk/${i.produk.foto}`,
+                    uri: `${i.produk.url}`,
                     width: 65,
                     height: 65,
                   }}

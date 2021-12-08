@@ -100,7 +100,7 @@ const Disukai = ({ navigation }) => {
                 id={i.id}
                 hargaPromo={i.produk.promo}
                 nama={i.produk.nama_produk}
-                image={`${env.url}/assets/img/uploads/produk/${i.produk.foto}`}
+                image={`${i.produk.url}`}
                 harga={i.produk.harga}
                 onPress={() => {
                   navigation.navigate("ProductPage", {

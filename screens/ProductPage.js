@@ -164,7 +164,7 @@ const productPage = ({ route, navigation }) => {
             <View style={styles.top}>
               <Image
                 source={{
-                  uri: `${env.url}/assets/img/uploads/produk/${data.produk.foto}`,
+                  uri: `${data.produk.url}`,
                   width: "100%",
                   height: 400,
                 }}
@@ -270,7 +270,7 @@ const productPage = ({ route, navigation }) => {
                 <View style={styles.profileImage}>
                   <Image
                     source={{
-                      uri: `${env.url}/assets/img/uploads/profile_images/${data.produk.user.photo}`,
+                      uri: `${data.produk.user.url}`,
                       width: 72,
                       height: 72,
                     }}
