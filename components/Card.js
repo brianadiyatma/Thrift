@@ -37,7 +37,7 @@ const Card = (props) => {
           style={{ alignItems: "flex-start", marginLeft: 10, marginTop: 2 }}
         >
           <View style={{ flexDirection: "row" }}>
-            <Price>Rp.</Price>
+            <Price>Rp</Price>
             <Price
               style={{
                 fontSize: 15,
@@ -54,7 +54,7 @@ const Card = (props) => {
                 color: COLOR.primary,
               }}
             >
-              Rp.{format(props.hargaPromo)}
+              Rp{format(props.hargaPromo)}
             </Price>
           )}
         </View>

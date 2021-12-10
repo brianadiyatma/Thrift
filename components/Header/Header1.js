@@ -20,7 +20,11 @@ const Header1 = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("ListScreen");
+          }}
+        >
           <Image
             style={{ width: 18, height: 18, resizeMode: "stretch" }}
             source={require("../../assets/img/icon/Vector1.png")}

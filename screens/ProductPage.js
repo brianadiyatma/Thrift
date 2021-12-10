@@ -239,7 +239,7 @@ const productPage = ({ route, navigation }) => {
             </View>
             <View style={styles.description}>
               <View style={{ flexDirection: "row" }}>
-                <Price>Rp.</Price>
+                <Price>Rp</Price>
                 <Price
                   style={{
                     fontSize: 15,
@@ -258,7 +258,7 @@ const productPage = ({ route, navigation }) => {
                     color: COLOR.primary,
                   }}
                 >
-                  Rp.{format(data.produk.promo)}
+                  Rp{format(data.produk.promo)}
                 </Price>
               )}
               <View style={{ marginTop: 10 }}>

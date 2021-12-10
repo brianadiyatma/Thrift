@@ -28,7 +28,7 @@ const Login = ({ navigation }) => {
       </View>
       <View style={{ margin: 20 }}>
         <Input
-          placeholder="Username"
+          placeholder="Nama Pengguna"
           onChangeText={(text) => setNama(text)}
           value={nama}
         />

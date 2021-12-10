@@ -80,7 +80,7 @@ const ProfileNavigation = ({ data }) => {
                     overflow: "hidden",
                   }}
                 />
-                <View style={{ alignItems: "flex-start", marginLeft: 20 }}>
+                <View style={{ alignItems: "flex-start", marginLeft: 20, maxWidth:300 }}>
                   <SemiBold style={{ fontSize: 17 }}>
                     {i.produk.nama_produk}
                   </SemiBold>

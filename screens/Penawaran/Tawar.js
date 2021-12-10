@@ -3,12 +3,17 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import Header2 from "../../components/Header/Header2";
 import TouchablePrimary from "../../components/TouchablePrimary";
 import env from "../../constants/env";
+import { DotIndicator } from "react-native-indicators";
+import SemiBold from "../../components/SemiBold";
 
 const Tawar = ({ navigation, route }) => {
   const parameter = route.params;
   const [tawar, setTawar] = useState();
+  const [loading, setLoading] = useState(false);
+  const [berhasil, setBerhasil] = useState(null);
 
   const onSubmit = () => {
+    setLoading(true);
     fetch(`${env.url}/api/penawaran/${parameter.id}`, {
       method: "POST",
       headers: {
@@ -22,10 +27,16 @@ const Tawar = ({ navigation, route }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.message === "Berhasil") {
-          navigation.popToTop();
+          setBerhasil("Penawaran Berhasil Dikirim");
+          setTimeout(() => {
+            setLoading(false);
+            navigation.popToTop();
+          }, 3500);
         } else {
-          throw Error("Maaf ada Kesalahan Sistem");
+          const err = Object.values(data.errors);
+          throw Error(err[0][0]);
         }
       })
       .catch((err) => alert(err.message));
@@ -39,13 +50,26 @@ const Tawar = ({ navigation, route }) => {
           textAlign={"center"}
           placeholder="Masukan Harga"
           value={tawar}
+          keyboardType="numeric"
           onChangeText={(text) => {
             setTawar(text);
           }}
         />
-        <TouchablePrimary onPress={onSubmit} style={{ height: 35, width: 150 }}>
-          Tawar
-        </TouchablePrimary>
+        {loading ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <DotIndicator color="#FF8D44" />
+          </View>
+        ) : (
+          <TouchablePrimary
+            onPress={onSubmit}
+            style={{ height: 35, width: 150 }}
+          >
+            Tawar
+          </TouchablePrimary>
+        )}
+        <SemiBold>{berhasil}</SemiBold>
       </View>
     </View>
   );

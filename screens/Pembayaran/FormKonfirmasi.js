@@ -76,9 +76,7 @@ const FormKonfirmasi = ({ navigation, route }) => {
       {loading && (
         <View
           style={{
-            marginTop: 50,
-            width: "100%",
-            height: "100%",
+            marginTop: 250,
             justifyContent: "center",
             alignItems: "center",
             marginBottom: "auto",
@@ -164,7 +162,7 @@ const FormKonfirmasi = ({ navigation, route }) => {
             </View>
           </View>
           <View style={styles.kota}>
-            <SemiBold style={{ fontSize: 15 }}>Pilih Kota</SemiBold>
+            <SemiBold style={{ fontSize: 15 }}>Pilih Kota/Kabupaten</SemiBold>
             <View style={{ ...styles.pickerContainer, marginTop: 10 }}>
               <Picker
                 selectedValue={kota}

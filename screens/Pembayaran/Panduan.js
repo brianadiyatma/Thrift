@@ -56,14 +56,14 @@ const Panduan = ({ navigation, route }) => {
           </SemiBold>
         </View>
         <View style={{ flexDirection: "row", marginTop: 10, width: 360 }}>
-          <SemiBold style={{ marginRight: 15 }}>1.</SemiBold>
+          <SemiBold style={{ marginRight: 15 }}>2.</SemiBold>
           <SemiBold>
             Pihak pemilik aplikasi tidak akan bertanggung jawab apabila produk
             yang dibeli oleh pembeli tidak sesuai.
           </SemiBold>
         </View>
         <View style={{ flexDirection: "row", marginTop: 10, width: 360 }}>
-          <SemiBold style={{ marginRight: 15 }}>1.</SemiBold>
+          <SemiBold style={{ marginRight: 15 }}>3.</SemiBold>
           <SemiBold>
             Pembayaran dengan sistem COD dilakukan secara langsung antara pihak
             pembeli dan penjual.

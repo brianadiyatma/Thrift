@@ -113,7 +113,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
                   <SemiBold>{params.pemesanan.produk.nama_produk}</SemiBold>
                 </View>
                 <Price>
-                  Rp.
+                  Rp
                   {format(params.pemesanan.pembayaran.total - 22500)}
                 </Price>
               </View>

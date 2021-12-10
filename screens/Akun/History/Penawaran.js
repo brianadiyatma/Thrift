@@ -89,6 +89,22 @@ const Penawaran = ({ navigation }) => {
                     </TawarList>
                   </View>
                 );
+              } else if (i.status === "Ditolak") {
+                return (
+                  <View style={{ marginTop: 45 }} key={i.id}>
+                    <TawarList
+                      imgurl={`${i.produk.url}`}
+                      status={i.status}
+                      statusColor="red"
+                      detail={false}
+                      onPress={() =>
+                        navigation.navigate("BayarPesanan", { id: i.produk.id })
+                      }
+                    >
+                      {i.produk.nama_produk}
+                    </TawarList>
+                  </View>
+                );
               }
             })}
           </ScrollView>

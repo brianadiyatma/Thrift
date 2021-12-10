@@ -124,7 +124,7 @@ const BayarPesanan = ({ navigation, route }) => {
                     <SemiBold>{data.produk.nama_produk}</SemiBold>
                   </View>
                   <Price>
-                    Rp.
+                    Rp
                     {format(
                       data.tawar
                         ? data.tawar.nominal
