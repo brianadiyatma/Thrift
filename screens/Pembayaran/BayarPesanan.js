@@ -21,6 +21,7 @@ const BayarPesanan = ({ navigation, route }) => {
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  console.log(metode);
   const handleKonfirmasi = () => {
     if (metode === "Transfer") {
       navigation.navigate("Panduan", {
@@ -33,7 +34,9 @@ const BayarPesanan = ({ navigation, route }) => {
               : data.produk.promo
               ? data.produk.promo
               : data.produk.harga
-          ) + 22500,
+          ) +
+          data.produk.berat * 10000 +
+          2500,
         metode_bayar: "transfer",
       });
     } else if (metode === "QRIS") {
@@ -47,21 +50,22 @@ const BayarPesanan = ({ navigation, route }) => {
               : data.produk.promo
               ? data.produk.promo
               : data.produk.harga
-          ) + 22500,
+          ) +
+          data.produk.berat * 10000 +
+          2500,
         metode_bayar: "qris",
       });
     } else {
       navigation.navigate("Panduan", {
         idProduct: data.produk.id,
         user_id: 8,
-        total:
-          Number(
-            data.tawar
-              ? data.tawar.nominal
-              : data.produk.promo
-              ? data.produk.promo
-              : data.produk.harga
-          ) + 22500,
+        total: Number(
+          data.tawar
+            ? data.tawar.nominal
+            : data.produk.promo
+            ? data.produk.promo
+            : data.produk.harga
+        ),
         metode_bayar: "cod",
       });
     }
@@ -74,6 +78,7 @@ const BayarPesanan = ({ navigation, route }) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setData(res);
         setLoading(false);
       })
@@ -210,18 +215,32 @@ const BayarPesanan = ({ navigation, route }) => {
                     : data.produk.harga
                 )}
               </Price>
-              <Price>{format(20000)}</Price>
-              <Price>{format(2500)}</Price>
               <Price>
-                {format(
-                  Number(
-                    data.tawar
-                      ? data.tawar.nominal
-                      : data.produk.promo
-                      ? data.produk.promo
-                      : data.produk.harga
-                  ) + 22500
-                )}
+                {metode === "COD" ? 0 : format(data.produk.berat * 10000)}
+              </Price>
+              <Price>{metode === "COD" ? 0 : format(2500)}</Price>
+              <Price>
+                {metode === "COD"
+                  ? format(
+                      Number(
+                        data.tawar
+                          ? data.tawar.nominal
+                          : data.produk.promo
+                          ? data.produk.promo
+                          : data.produk.harga
+                      )
+                    )
+                  : format(
+                      Number(
+                        data.tawar
+                          ? data.tawar.nominal
+                          : data.produk.promo
+                          ? data.produk.promo
+                          : data.produk.harga
+                      ) +
+                        data.produk.berat * 10000 +
+                        2500
+                    )}
               </Price>
             </View>
           </View>

@@ -13,6 +13,7 @@ const Panduan = ({ navigation, route }) => {
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  console.log(params.total);
   const handleSetuju = () => {
     setLoading(true);
     fetch(`${env.url}/api/checkout/${params.idProduct}`, {

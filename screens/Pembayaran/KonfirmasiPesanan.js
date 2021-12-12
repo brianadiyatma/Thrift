@@ -20,6 +20,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
   const [metode, setMetode] = useState(
     params.pemesanan.pembayaran.metode_bayar
   );
+  console.log(params);
   const [err, setErr] = useState(null);
   const onKonfirmasi = () => {
     setLoading(true);
@@ -114,7 +115,10 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
                 </View>
                 <Price>
                   Rp
-                  {format(params.pemesanan.pembayaran.total - 22500)}
+                  {format(
+                    params.pemesanan.pembayaran.total -
+                      (params.pemesanan.produk.berat * 10000 + 2500)
+                  )}
                 </Price>
               </View>
             </View>
@@ -187,8 +191,13 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
             <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
           </View>
           <View style={{ width: 120, paddingLeft: 20 }}>
-            <Price>{format(params.pemesanan.pembayaran.total - 22500)}</Price>
-            <Price>{format(20000)}</Price>
+            <Price>
+              {format(
+                params.pemesanan.pembayaran.total -
+                  (params.pemesanan.produk.berat * 10000 + 2500)
+              )}
+            </Price>
+            <Price>{format(params.pemesanan.produk.berat * 10000)}</Price>
             <Price>{format(2500)}</Price>
             <Price>{format(params.pemesanan.pembayaran.total)}</Price>
           </View>

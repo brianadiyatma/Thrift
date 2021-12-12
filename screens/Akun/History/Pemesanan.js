@@ -73,6 +73,7 @@ const Pemesanan = ({ navigation }) => {
                           nomor: i.pembayaran.tel,
                           foto: i.produk.url,
                           nama_produk: i.produk.nama_produk,
+                          berat: i.produk.berat,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,
                         })
@@ -117,6 +118,7 @@ const Pemesanan = ({ navigation }) => {
                           nomor: i.pembayaran.tel,
                           foto: i.produk.url,
                           nama_produk: i.produk.nama_produk,
+                          berat: i.produk.berat,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,
                         })

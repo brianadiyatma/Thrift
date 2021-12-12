@@ -16,7 +16,7 @@ const format = (amount) => {
 const ViewPesanan = ({ navigation, route }) => {
   const params = route.params;
   const [metode, setMetode] = useState(params.metode_bayar);
-
+  console.log(params);
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.goBack()}>Pembayaran</Header2>
@@ -58,8 +58,8 @@ const ViewPesanan = ({ navigation, route }) => {
                   <SemiBold>{params.nama_produk}</SemiBold>
                 </View>
                 <Price>
-                  Rp.
-                  {format(params.total - 22500)}
+                  Rp
+                  {format(params.total - (params.berat * 10000 + 2500))}
                 </Price>
               </View>
             </View>
@@ -132,8 +132,10 @@ const ViewPesanan = ({ navigation, route }) => {
             <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
           </View>
           <View style={{ width: 120, paddingLeft: 20 }}>
-            <Price>{format(params.total - 22500)}</Price>
-            <Price>{format(20000)}</Price>
+            <Price>
+              {format(params.total - (params.berat * 10000 + 2500))}
+            </Price>
+            <Price>{format(params.berat * 10000)}</Price>
             <Price>{format(2500)}</Price>
             <Price>{format(params.total)}</Price>
           </View>
