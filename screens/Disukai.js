@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import Header1 from "../components/Header/Header1";
 import Card from "../components/Card";
@@ -15,6 +15,7 @@ import SemiBold from "../components/SemiBold";
 import TouchablePrimary from "../components/TouchablePrimary";
 
 const Disukai = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
@@ -38,9 +39,7 @@ const Disukai = ({ navigation }) => {
           setLoading(false);
         }
       });
-    return () => {
-      abortCont.abort();
-    };
+    return () => abortCont.abort();
   }, []);
 
   const muatUlang = () => {
@@ -61,7 +60,24 @@ const Disukai = ({ navigation }) => {
         }
       });
   };
-  console.log(item);
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetch(`${env.url}/api/wishlist?user_id=${user.userToken}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        setErr(err.message);
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setRefreshing(false);
+        }
+      });
+  };
   return (
     <View style={styles.screen}>
       <Header1 navigation={navigation}>Disukai</Header1>
@@ -92,7 +108,11 @@ const Disukai = ({ navigation }) => {
           <DotIndicator color="#FF8D44" />
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.product}>
             {item.wishlist.map((i) => (
               <Card
@@ -122,7 +142,9 @@ const styles = StyleSheet.create({
   },
   product: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
+    marginHorizontal: 20,
+    justifyContent: "space-between",
     flexWrap: "wrap",
   },
 });

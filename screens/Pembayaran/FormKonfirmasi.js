@@ -206,6 +206,7 @@ const FormKonfirmasi = ({ navigation, route }) => {
               placeholder="Nomor Telpon"
               onChangeText={(text) => setNomor(text)}
               value={nomor}
+              keyboardType="numeric"
             />
           </View>
 

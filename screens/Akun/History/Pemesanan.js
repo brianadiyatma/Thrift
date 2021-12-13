@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, RefreshControl, ScrollView } from "react-native";
 import Header2 from "../../../components/Header/Header2";
 import ProductList from "../../../components/ProductList";
 import { DotIndicator } from "react-native-indicators";
@@ -12,6 +12,7 @@ const Pemesanan = ({ navigation }) => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     const abortCont = new AbortController();
     fetch(`${env.url}/api/pemesanan?user_id=${user.userToken}`, {
@@ -32,6 +33,27 @@ const Pemesanan = ({ navigation }) => {
       });
     return () => abortCont.abort();
   }, []);
+  const onRefresh = () => {
+    setRefreshing(true);
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/pemesanan?user_id=${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setRefreshing(false);
+        }
+      });
+    return () => abortCont.abort();
+  };
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Pemesanan</Header2>
@@ -52,7 +74,11 @@ const Pemesanan = ({ navigation }) => {
         )}
 
         {!loading && (
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             {item.pemesanan.map((i) => {
               if (
                 i.status_pembeli === "Konfirmasi admin" ||

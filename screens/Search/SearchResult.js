@@ -98,7 +98,7 @@ const SearchResult = ({ navigation, route }) => {
         </View>
       </View>
 
-      <ScrollView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         {!loading && !err && item.length === 0 && (
           <View
             style={{
@@ -129,7 +129,7 @@ const SearchResult = ({ navigation, route }) => {
             <DotIndicator color="#FF8D44" />
           </View>
         ) : (
-          <View style={{ marginTop: 10 }}>
+          <ScrollView style={{ marginTop: 10 }} >
             <View style={styles.item}>
               {item.map((i) => (
                 <Card
@@ -147,9 +147,9 @@ const SearchResult = ({ navigation, route }) => {
                 />
               ))}
             </View>
-          </View>
+          </ScrollView>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -173,7 +173,9 @@ const styles = StyleSheet.create({
 
   item: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    marginHorizontal: 20,
+    justifyContent: "space-between",
+    // justifyContent: "space-evenly",
     flexWrap: "wrap",
   },
 });

@@ -1,5 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import SemiBold from "../components/SemiBold";
 import Header2 from "../components/Header/Header2";
 import env from "../constants/env";
@@ -11,7 +17,7 @@ const notifikasi = ({ navigation }) => {
 
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [refreshing, setRefreshing] = useState(false);
   const [err, setErr] = useState(null);
   const onPress = (id, destination) => {
     navigation.navigate(destination);
@@ -22,6 +28,29 @@ const notifikasi = ({ navigation }) => {
         console.log(data);
         setLoading(false);
       });
+  };
+  const onRefresh = function () {
+    setRefreshing(true);
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/notif?user_id=${userID.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (item) {
+          setItem(data.notifikasi);
+          setRefreshing(false);
+        }
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setRefreshing(false);
+        }
+      });
+    return () => abortCont.abort();
   };
   useEffect(() => {
     const abortCont = new AbortController();
@@ -67,7 +96,11 @@ const notifikasi = ({ navigation }) => {
           </View>
         )}
         {!loading && !err && !item.length === 0 ? null : (
-          <View>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <View style={styles.list}>
               {item.map((i, j) => {
                 if (i.destinasi === "chat") {
@@ -105,7 +138,7 @@ const notifikasi = ({ navigation }) => {
                       key={i.id}
                       onPress={() => {
                         item.splice(j, 1);
-                        onPress(i.id, "ListScreen");
+                        onPress(i.id, "Riwayat");
                       }}
                     >
                       <View
@@ -152,7 +185,7 @@ const notifikasi = ({ navigation }) => {
                 }
               })}
             </View>
-          </View>
+          </ScrollView>
         )}
       </View>
     </View>

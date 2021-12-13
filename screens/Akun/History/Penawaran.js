@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
 import Header2 from "../../../components/Header/Header2";
 
 import { DotIndicator } from "react-native-indicators";
@@ -13,6 +13,7 @@ const Penawaran = ({ navigation }) => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     const abortCont = new AbortController();
     fetch(`${env.url}/api/penawaran?user_id=${user.userToken}`, {
@@ -33,7 +34,26 @@ const Penawaran = ({ navigation }) => {
       });
     return () => abortCont.abort();
   }, []);
-
+  const onRefresh = () => {
+    setRefreshing(true);
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/penawaran?user_id=${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setRefreshing(false);
+        }
+      });
+  };
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Penawaran</Header2>
@@ -58,7 +78,11 @@ const Penawaran = ({ navigation }) => {
         )}
 
         {!loading && (
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             {item.tawar.map((i) => {
               if (i.status === "Proses") {
                 return (

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   View,
-  Text,
+  RefreshControl,
   StyleSheet,
   Image,
   TouchableOpacity,
@@ -20,6 +20,7 @@ const Beranda = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const user = useContext(AuthContext);
   const [err, setErr] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -41,7 +42,27 @@ const Beranda = ({ navigation }) => {
       });
     return () => abortCont.abort();
   }, [user]);
-
+  const onRefresh = function () {
+    setRefreshing(true);
+    const abortCont = new AbortController();
+    fetch(`${env.url}/api/rekomendasi/${user.userToken}`, {
+      signal: abortCont.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data.produk);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") {
+          console.log(err.name);
+        } else {
+          setErr(err.message);
+          setRefreshing(false);
+        }
+      });
+    return () => abortCont.abort();
+  };
   const [Search, setSearch] = useState("");
   return (
     <View style={styles.screen}>
@@ -111,7 +132,11 @@ const Beranda = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <View style={styles.category}>
               <SemiBold style={{ fontSize: 18 }}>Kategori</SemiBold>
               <View
@@ -341,7 +366,9 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+    // width: "100%",
     flexWrap: "wrap",
   },
 });
