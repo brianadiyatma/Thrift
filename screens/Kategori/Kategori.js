@@ -57,7 +57,11 @@ const Kategori = ({ route, navigation }) => {
   };
   return (
     <View style={styles.screen}>
-      <Header1 navigation={navigation}>{params.Kategori}</Header1>
+      <Header1 navigation={navigation}>
+        {params.Kategori === "Game Console"
+          ? "Permainan Konsol"
+          : params.Kategori}
+      </Header1>
       {err && (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}

@@ -58,7 +58,7 @@ const KonfirmasiPaket = ({ navigation, route }) => {
                   <SemiBold>{params.nama_produk}</SemiBold>
                 </View>
                 <Price>
-                  Rp.
+                  Rp
                   {format(
                     params.metode_bayar === "cod"
                       ? params.total

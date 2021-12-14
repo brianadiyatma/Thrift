@@ -80,7 +80,13 @@ const ProfileNavigation = ({ data }) => {
                     overflow: "hidden",
                   }}
                 />
-                <View style={{ alignItems: "flex-start", marginLeft: 20, maxWidth:300 }}>
+                <View
+                  style={{
+                    alignItems: "flex-start",
+                    marginLeft: 20,
+                    maxWidth: 300,
+                  }}
+                >
                   <SemiBold style={{ fontSize: 17 }}>
                     {i.produk.nama_produk}
                   </SemiBold>
@@ -142,7 +148,7 @@ const ProfileNavigation = ({ data }) => {
       }}
     >
       <Tab.Screen name="Produk" component={Produk} />
-      <Tab.Screen name="Review" component={Review} />
+      <Tab.Screen name="Ulasan" component={Review} />
       <Tab.Screen
         name="Lokasi"
         component={Maps}

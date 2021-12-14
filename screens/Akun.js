@@ -40,7 +40,7 @@ const Akun = ({ navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Bantuan")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Bantuan")}>
           <View
             style={{
               marginVertical: 10,
@@ -64,7 +64,7 @@ const Akun = ({ navigation }) => {
             }}
           >
             <View style={{ marginLeft: 25 }}>
-              <SemiBold style={{ fontSize: 20 }}>Chat</SemiBold>
+              <SemiBold style={{ fontSize: 20 }}>Pesan</SemiBold>
             </View>
           </View>
         </TouchableOpacity>
@@ -82,7 +82,7 @@ const Akun = ({ navigation }) => {
             }}
           >
             <View style={{ marginLeft: 25 }}>
-              <SemiBold style={{ fontSize: 20 }}>Logout</SemiBold>
+              <SemiBold style={{ fontSize: 20 }}>Keluar</SemiBold>
             </View>
           </View>
         </TouchableOpacity>

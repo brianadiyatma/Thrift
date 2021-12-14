@@ -36,7 +36,7 @@ const Login = ({ navigation }) => {
       <View style={{ margin: 20 }}>
         <Input
           secureTextEntry={true}
-          placeholder="Password"
+          placeholder="Kata Sandi"
           onChangeText={(password) => setPassword(password)}
           value={password}
         />
@@ -55,7 +55,7 @@ const Login = ({ navigation }) => {
         </View>
       ) : (
         <TouchablePrimary style={styles.btn} onPress={handleLogin}>
-          Login
+          Masuk
         </TouchablePrimary>
       )}
       <View>

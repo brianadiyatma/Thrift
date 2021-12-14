@@ -12,7 +12,7 @@ const SuccessReview = ({ navigation }) => {
           source={require("../../assets/img/icon/centang.png")}
         />
         <Text style={{ fontFamily: "LGC-Bold", marginTop: 50 }}>
-          Review Telah Dikirim Ke Penjual
+          Ulasan Telah Dikirim Ke Penjual
         </Text>
         <TouchablePrimary
           style={{ width: 200, height: 30, marginTop: 50 }}

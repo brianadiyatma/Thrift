@@ -125,11 +125,11 @@ const UbahData = ({ navigation }) => {
               </View>
               <View style={styles.formWrapper}>
                 <Text style={{ fontFamily: "LGC", color: "#746F6C" }}>
-                  Password
+                  Kata Sandi
                 </Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Password"
+                  placeholder="Kata Sandi"
                   secureTextEntry={true}
                   onChangeText={(text) => {
                     setItem({ ...item, password: text });

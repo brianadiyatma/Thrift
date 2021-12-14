@@ -65,7 +65,7 @@ const Rating = ({ navigation, route }) => {
           </View>
         </View>
         <View>
-          <SemiBold style={{ fontSize: 16 }}>Review</SemiBold>
+          <SemiBold style={{ fontSize: 16 }}>Ulasan</SemiBold>
           <TextInput
             multiline={true}
             numberOfLines={4}

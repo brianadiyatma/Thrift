@@ -19,7 +19,7 @@ const Splash = ({ navigation }) => {
         <View style={{ marginBottom: 5, flexDirection: "row", marginTop: 20 }}>
           <Text style={{ fontFamily: "LGC-Bold" }}>Sudah Memiliki Akun? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <SemiBold style={{ fontWeight: "bold" }}>Login</SemiBold>
+            <SemiBold style={{ fontWeight: "bold" }}>Masuk</SemiBold>
           </TouchableOpacity>
         </View>
       </View>
