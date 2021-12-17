@@ -26,7 +26,7 @@ const KonfirmasiPaket = ({ navigation, route }) => {
           </Text>
           <Text style={{ fontFamily: "LGC-Bold", color: "#746F6C" }}>
             {params.metode_bayar === "cod"
-              ? "Alamat Tidak Tersedia di Fitur Cash on Delivery"
+              ? "Alamat Tidak Tersedia di Fitur Bayar di Tempat"
               : params.alamat}
           </Text>
           <Text style={{ fontFamily: "LGC-Bold", color: "#746F6C" }}>

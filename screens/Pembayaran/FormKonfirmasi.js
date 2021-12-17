@@ -137,6 +137,7 @@ const FormKonfirmasi = ({ navigation, route }) => {
           </View>
           <View style={styles.nomorRekening}>
             <TextInput
+              keyboardType="numeric"
               style={styles.input}
               placeholder="Nomor Rekening"
               onChangeText={(text) => setNomorRekening(text)}

@@ -181,7 +181,9 @@ const styles = StyleSheet.create({
   },
   product: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+    // width: "100%",
     flexWrap: "wrap",
   },
 });

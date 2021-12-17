@@ -61,7 +61,7 @@ const QRIS = ({ navigation, route }) => {
             }}
           ></View>
           <View style={styles.metode}>
-            <SemiBold style={{ fontSize: 16 }}>QR Code</SemiBold>
+            <SemiBold style={{ fontSize: 16 }}>Kode QR</SemiBold>
             <Text
               style={{ fontSize: 13, marginTop: 10, fontFamily: "LGC-Bold" }}
             >

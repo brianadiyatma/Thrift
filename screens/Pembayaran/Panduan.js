@@ -66,7 +66,7 @@ const Panduan = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", marginTop: 10, width: 360 }}>
           <SemiBold style={{ marginRight: 15 }}>3.</SemiBold>
           <SemiBold>
-            Pembayaran dengan sistem COD dilakukan secara langsung antara pihak
+            Pembayaran dengan sistem Bayar di Tempat dilakukan secara langsung antara pihak
             pembeli dan penjual.
           </SemiBold>
         </View>

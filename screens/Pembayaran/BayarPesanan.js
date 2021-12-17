@@ -185,7 +185,7 @@ const BayarPesanan = ({ navigation, route }) => {
                       onPress={() => setMetode("COD")}
                       color="black"
                     />
-                    <Price>Cash On Delivery (COD)</Price>
+                    <Price>Bayar di Tempat</Price>
                   </View>
                 </View>
               </View>

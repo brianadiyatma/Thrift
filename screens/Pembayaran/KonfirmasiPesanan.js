@@ -170,7 +170,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
                     color="black"
                     disabled={true}
                   />
-                  <Price>Cash On Delivery (COD)</Price>
+                  <Price>Bayar di Tempat</Price>
                 </View>
               </View>
             </View>
