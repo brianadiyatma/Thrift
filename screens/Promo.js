@@ -26,27 +26,6 @@ const Promo = ({ navigation }) => {
       .then((data) => {
         setItem(data.produk);
         setLoading(false);
-      })
-      .catch((err) => {
-        setErr(err.message);
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
-    return () => {
-      abortCont.abort();
-    };
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetch(`${env.url}/api/produk?promo=true`)
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data.produk);
         setRefreshing(false);
       })
       .catch((err) => {
@@ -55,10 +34,13 @@ const Promo = ({ navigation }) => {
           console.log(err.name);
         } else {
           setErr(err.message);
+          setLoading(false);
           setRefreshing(false);
         }
       });
-  };
+
+    return () => abortCont.abort();
+  }, [refreshing]);
 
   return (
     <View style={styles.screen}>
@@ -79,7 +61,10 @@ const Promo = ({ navigation }) => {
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
           }
         >
           <View style={styles.product}>

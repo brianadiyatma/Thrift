@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import SemiBold from "../../components/SemiBold";
 import Input from "../../components/Input";
@@ -19,7 +20,7 @@ const SearchResult = ({ navigation, route }) => {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
-
+  const [refreshing, setRefreshing] = useState(false);
   console.log(params);
   useEffect(() => {
     const abortCont = new AbortController();
@@ -40,17 +41,19 @@ const SearchResult = ({ navigation, route }) => {
         console.log(data);
         setItem(data.produk);
         setLoading(false);
+        setRefreshing(false);
       })
       .catch((err) => {
-        if (err?.name === "AbortError") {
+        if (err.name === "AbortError") {
           console.log(err);
         } else {
           setErr(err.message);
           setLoading(false);
+          setRefreshing(false);
         }
       });
     return () => abortCont.abort();
-  }, []);
+  }, [refreshing]);
 
   return (
     <View style={styles.screen}>
@@ -129,7 +132,15 @@ const SearchResult = ({ navigation, route }) => {
             <DotIndicator color="#FF8D44" />
           </View>
         ) : (
-          <ScrollView style={{ marginTop: 10 }} >
+          <ScrollView
+            style={{ marginTop: 10 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
+            }
+          >
             <View style={styles.item}>
               {item.map((i) => (
                 <Card

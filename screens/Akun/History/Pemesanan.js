@@ -13,8 +13,8 @@ const Pemesanan = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const abortCont = new AbortController();
   useEffect(() => {
-    const abortCont = new AbortController();
     fetch(`${env.url}/api/pemesanan?user_id=${user.userToken}`, {
       signal: abortCont.signal,
     })
@@ -22,26 +22,6 @@ const Pemesanan = ({ navigation }) => {
       .then((data) => {
         setItem(data);
         setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
-    return () => abortCont.abort();
-  }, []);
-  const onRefresh = () => {
-    setRefreshing(true);
-    const abortCont = new AbortController();
-    fetch(`${env.url}/api/pemesanan?user_id=${user.userToken}`, {
-      signal: abortCont.signal,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data);
         setRefreshing(false);
       })
       .catch((err) => {
@@ -49,11 +29,13 @@ const Pemesanan = ({ navigation }) => {
           console.log(err.name);
         } else {
           setErr(err.message);
+          setLoading(false);
           setRefreshing(false);
         }
       });
     return () => abortCont.abort();
-  };
+  }, [refreshing]);
+
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Pemesanan</Header2>
@@ -76,7 +58,10 @@ const Pemesanan = ({ navigation }) => {
         {!loading && (
           <ScrollView
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
             }
           >
             {item.pemesanan.map((i) => {

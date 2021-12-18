@@ -19,6 +19,7 @@ const Disukai = ({ navigation }) => {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [muat, setMuat] = useState(false);
   const user = useContext(AuthContext);
   useEffect(() => {
     const abortCont = new AbortController();
@@ -29,6 +30,8 @@ const Disukai = ({ navigation }) => {
       .then((data) => {
         setItem(data);
         setLoading(false);
+        setRefreshing(false);
+        setMuat(false);
       })
       .catch((err) => {
         setErr(err.message);
@@ -37,47 +40,18 @@ const Disukai = ({ navigation }) => {
         } else {
           setErr(err.message);
           setLoading(false);
+          setRefreshing(false);
+          setMuat(false);
         }
       });
     return () => abortCont.abort();
-  }, []);
+  }, [refreshing, muat]);
 
   const muatUlang = () => {
     setLoading(true);
-    fetch(`${env.url}/api/wishlist?user_id=${user.userToken}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setErr(err.message);
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
+    setMuat(true);
   };
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetch(`${env.url}/api/wishlist?user_id=${user.userToken}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data);
-        setRefreshing(false);
-      })
-      .catch((err) => {
-        setErr(err.message);
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setRefreshing(false);
-        }
-      });
-  };
+
   return (
     <View style={styles.screen}>
       <Header1 navigation={navigation}>Disukai</Header1>
@@ -110,7 +84,10 @@ const Disukai = ({ navigation }) => {
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
           }
         >
           <View style={styles.product}>

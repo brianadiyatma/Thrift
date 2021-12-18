@@ -19,6 +19,8 @@ const notifikasi = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [err, setErr] = useState(null);
+  const abortCont = new AbortController();
+
   const onPress = (id, destination) => {
     navigation.navigate(destination);
     setLoading(true);
@@ -29,32 +31,8 @@ const notifikasi = ({ navigation }) => {
         setLoading(false);
       });
   };
-  const onRefresh = function () {
-    setRefreshing(true);
-    const abortCont = new AbortController();
-    fetch(`${env.url}/api/notif?user_id=${userID.userToken}`, {
-      signal: abortCont.signal,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (item) {
-          setItem(data.notifikasi);
-          setRefreshing(false);
-        }
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setRefreshing(false);
-        }
-      });
-    return () => abortCont.abort();
-  };
+
   useEffect(() => {
-    const abortCont = new AbortController();
-    const { signal } = abortCont;
     fetch(`${env.url}/api/notif?user_id=${userID.userToken}`, {
       signal: abortCont.signal,
     })
@@ -63,6 +41,7 @@ const notifikasi = ({ navigation }) => {
         if (item) {
           setItem(data.notifikasi);
           setLoading(false);
+          setRefreshing(false);
         }
       })
       .catch((err) => {
@@ -71,10 +50,11 @@ const notifikasi = ({ navigation }) => {
         } else {
           setErr(err.message);
           setLoading(false);
+          setRefreshing(false);
         }
       });
     return () => abortCont.abort();
-  }, []);
+  }, [refreshing]);
 
   console.log(item);
   return (
@@ -98,7 +78,10 @@ const notifikasi = ({ navigation }) => {
         {!loading && !err && !item.length === 0 ? null : (
           <ScrollView
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
             }
           >
             <View style={styles.list}>

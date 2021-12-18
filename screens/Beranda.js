@@ -31,26 +31,6 @@ const Beranda = ({ navigation }) => {
       .then((data) => {
         setItem(data.produk);
         setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
-    return () => abortCont.abort();
-  }, [user]);
-  const onRefresh = function () {
-    setRefreshing(true);
-    const abortCont = new AbortController();
-    fetch(`${env.url}/api/rekomendasi/${user.userToken}`, {
-      signal: abortCont.signal,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data.produk);
         setRefreshing(false);
       })
       .catch((err) => {
@@ -58,11 +38,15 @@ const Beranda = ({ navigation }) => {
           console.log(err.name);
         } else {
           setErr(err.message);
+          setLoading(false);
           setRefreshing(false);
         }
       });
-    return () => abortCont.abort();
-  };
+    return () => {
+      abortCont.abort();
+    };
+  }, [refreshing]);
+
   const [Search, setSearch] = useState("");
   return (
     <View style={styles.screen}>
@@ -134,7 +118,10 @@ const Beranda = ({ navigation }) => {
           </View>
           <ScrollView
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
             }
           >
             <View style={styles.category}>

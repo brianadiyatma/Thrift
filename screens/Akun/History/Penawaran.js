@@ -23,26 +23,6 @@ const Penawaran = ({ navigation }) => {
       .then((data) => {
         setItem(data);
         setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
-    return () => abortCont.abort();
-  }, []);
-  const onRefresh = () => {
-    setRefreshing(true);
-    const abortCont = new AbortController();
-    fetch(`${env.url}/api/penawaran?user_id=${user.userToken}`, {
-      signal: abortCont.signal,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data);
         setRefreshing(false);
       })
       .catch((err) => {
@@ -50,10 +30,13 @@ const Penawaran = ({ navigation }) => {
           console.log(err.name);
         } else {
           setErr(err.message);
+          setLoading(false);
           setRefreshing(false);
         }
       });
-  };
+    return () => abortCont.abort();
+  }, [refreshing]);
+
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Penawaran</Header2>
@@ -80,7 +63,10 @@ const Penawaran = ({ navigation }) => {
         {!loading && (
           <ScrollView
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() => setRefreshing(true)}
+              />
             }
           >
             {item.tawar.map((i) => {

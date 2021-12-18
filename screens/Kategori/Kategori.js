@@ -22,27 +22,6 @@ const Kategori = ({ route, navigation }) => {
       .then((data) => {
         setItem(data.produk);
         setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") {
-          console.log(err.name);
-        } else {
-          setErr(err.message);
-          setLoading(false);
-        }
-      });
-    return () => abortCont.abort();
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    const abortCont = new AbortController();
-    fetch(`${env.url}/api/produk?kategori=${params.Kategori}`, {
-      signal: abortCont.signal,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data.produk);
         setRefreshing(false);
       })
       .catch((err) => {
@@ -50,11 +29,13 @@ const Kategori = ({ route, navigation }) => {
           console.log(err.name);
         } else {
           setErr(err.message);
+          setLoading(false);
           setRefreshing(false);
         }
       });
     return () => abortCont.abort();
-  };
+  }, [refreshing]);
+
   return (
     <View style={styles.screen}>
       <Header1 navigation={navigation}>
@@ -85,7 +66,10 @@ const Kategori = ({ route, navigation }) => {
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
           }
         >
           <View style={styles.product}>
