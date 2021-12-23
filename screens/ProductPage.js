@@ -258,7 +258,13 @@ const productPage = ({ route, navigation }) => {
                     color: COLOR.primary,
                   }}
                 >
-                  Rp{format(data.produk.promo)}
+                  Rp{format(data.produk.promo)} (
+                  {Math.round(
+                    ((data.produk.harga - data.produk.promo) /
+                      data.produk.harga) *
+                      100
+                  )}
+                  %)
                 </Price>
               )}
               <View style={{ marginTop: 10 }}>

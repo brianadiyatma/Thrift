@@ -188,6 +188,7 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
             <SemiBold style={{ textAlign: "right" }}>SUBTOTAL</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>PENGIRIMAN</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>BIAYA ADMIN</SemiBold>
+            <SemiBold style={{ textAlign: "right" }}>KODE UNIK</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
           </View>
           <View style={{ width: 120, paddingLeft: 20 }}>
@@ -199,7 +200,13 @@ const KonfirmasiPesanan = ({ navigation, route }) => {
             </Price>
             <Price>{format(params.pemesanan.produk.berat * 10000)}</Price>
             <Price>{format(2500)}</Price>
-            <Price>{format(params.pemesanan.pembayaran.total)}</Price>
+            <Price>{format(params.pemesanan.pembayaran.nounik)}</Price>
+            <Price>
+              {format(
+                Number(params.pemesanan.pembayaran.total) +
+                  Number(params.pemesanan.pembayaran.nounik)
+              )}
+            </Price>
           </View>
         </View>
         {loading ? (

@@ -24,6 +24,7 @@ const Panduan = ({ navigation, route }) => {
       body: JSON.stringify({
         user_id: user.userToken,
         total: params.total,
+        nounik: params.nounik,
         metode_bayar: params.metode_bayar,
       }),
     })
@@ -66,8 +67,8 @@ const Panduan = ({ navigation, route }) => {
         <View style={{ flexDirection: "row", marginTop: 10, width: 360 }}>
           <SemiBold style={{ marginRight: 15 }}>3.</SemiBold>
           <SemiBold>
-            Pembayaran dengan sistem Bayar di Tempat dilakukan secara langsung antara pihak
-            pembeli dan penjual.
+            Pembayaran dengan sistem Bayar di Tempat dilakukan secara langsung
+            antara pihak pembeli dan penjual.
           </SemiBold>
         </View>
         {loading ? (

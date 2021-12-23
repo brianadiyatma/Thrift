@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-
+import TouchablePrimary from "./TouchablePrimary";
+import SemiBold from "./SemiBold";
 const ProductList = (props) => {
   return (
     <View style={styles.screen}>
@@ -23,9 +24,31 @@ const ProductList = (props) => {
         >
           {props.status}
         </Text>
+        <TouchableOpacity
+          style={{ flexDirection: "row" }}
+          onPress={() =>
+            props.navigation.navigate("ProfilePenjual", {
+              penjualId: props.penjual.id,
+            })
+          }
+        >
+          <Image
+            style={{
+              width: 18,
+              height: 18,
+              resizeMode: "stretch",
+              marginRight: 10,
+            }}
+            source={require("../assets/img/icon/shop.png")}
+          />
+          <SemiBold>{props.penjual.username}</SemiBold>
+        </TouchableOpacity>
       </View>
       <View style={styles.detail}>
-        <TouchableOpacity onPress={props.onPress}>
+        <TouchablePrimary
+          style={{ width: 80, height: 25 }}
+          onPress={props.onPress}
+        >
           <Text
             style={{
               ...styles.productTitle,
@@ -34,7 +57,7 @@ const ProductList = (props) => {
           >
             Detail
           </Text>
-        </TouchableOpacity>
+        </TouchablePrimary>
       </View>
     </View>
   );

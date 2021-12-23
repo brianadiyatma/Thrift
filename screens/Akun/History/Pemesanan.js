@@ -20,6 +20,7 @@ const Pemesanan = ({ navigation }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setItem(data);
         setLoading(false);
         setRefreshing(false);
@@ -36,6 +37,7 @@ const Pemesanan = ({ navigation }) => {
     return () => abortCont.abort();
   }, [refreshing]);
 
+  console.log(item);
   return (
     <View style={styles.screen}>
       <Header2 onPress={() => navigation.goBack()}>Pemesanan</Header2>
@@ -75,7 +77,9 @@ const Pemesanan = ({ navigation }) => {
                     <ProductList
                       imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
+                      navigation={navigation}
                       statusColor="black"
+                      penjual={i.penjual}
                       onPress={() =>
                         navigation.navigate("ViewPesanan", {
                           namaRekening: i.pembayaran.nama,
@@ -87,6 +91,7 @@ const Pemesanan = ({ navigation }) => {
                           berat: i.produk.berat,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,
+                          nounik: i.pembayaran.nounik,
                         })
                       }
                     >
@@ -100,6 +105,8 @@ const Pemesanan = ({ navigation }) => {
                     <ProductList
                       imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
+                      navigation={navigation}
+                      penjual={i.penjual}
                       statusColor="black"
                       onPress={() => {
                         if (i.pembayaran.metode_bayar === "transfer") {
@@ -119,6 +126,8 @@ const Pemesanan = ({ navigation }) => {
                     <ProductList
                       imgurl={`${i.produk.url}`}
                       status={i.status_pembeli}
+                      navigation={navigation}
+                      penjual={i.penjual}
                       statusColor="black"
                       onPress={() =>
                         navigation.navigate("KonfirmasiPaket", {
@@ -132,6 +141,7 @@ const Pemesanan = ({ navigation }) => {
                           berat: i.produk.berat,
                           total: i.pembayaran.total,
                           metode_bayar: i.pembayaran.metode_bayar,
+                          nounik: i.pembayaran.nounik,
                         })
                       }
                     >

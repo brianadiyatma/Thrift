@@ -35,6 +35,7 @@ const Transfer = ({ navigation, route }) => {
       });
     return () => abortCont.abort();
   }, []);
+  console.log(data);
   return (
     <View style={{ flex: 1 }}>
       <Header2 onPress={() => navigation.popToTop()}>Pembayaran</Header2>
@@ -49,7 +50,11 @@ const Transfer = ({ navigation, route }) => {
           <View style={styles.total}>
             <SemiBold style={{ fontSize: 16 }}>Total</SemiBold>
             <Text style={{ fontSize: 18, marginTop: 10, fontFamily: "LGC" }}>
-              Rp{format(data.pemesanan.pembayaran.total)}
+              Rp
+              {format(
+                Number(data.pemesanan.pembayaran.total) +
+                  Number(data.pemesanan.pembayaran.nounik)
+              )}
             </Text>
           </View>
           <View

@@ -13,6 +13,11 @@ const format = (amount) => {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
+function randomXToY(minVal, maxVal) {
+  var randVal = minVal + Math.random() * (maxVal - minVal);
+  return Math.round(randVal);
+}
+
 const BayarPesanan = ({ navigation, route }) => {
   const user = useContext(AuthContext);
   const params = route.params;
@@ -20,6 +25,7 @@ const BayarPesanan = ({ navigation, route }) => {
   const [data, setData] = useState({});
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [kodeunik, setKodeunik] = useState(randomXToY(1, 999));
 
   console.log(metode);
   const handleKonfirmasi = () => {
@@ -38,6 +44,7 @@ const BayarPesanan = ({ navigation, route }) => {
           data.produk.berat * 10000 +
           2500,
         metode_bayar: "transfer",
+        nounik: kodeunik,
       });
     } else if (metode === "QRIS") {
       navigation.navigate("Panduan", {
@@ -54,6 +61,7 @@ const BayarPesanan = ({ navigation, route }) => {
           data.produk.berat * 10000 +
           2500,
         metode_bayar: "qris",
+        nounik: kodeunik,
       });
     } else {
       navigation.navigate("Panduan", {
@@ -67,6 +75,7 @@ const BayarPesanan = ({ navigation, route }) => {
             : data.produk.harga
         ),
         metode_bayar: "cod",
+        kodeUnik: 0,
       });
     }
   };
@@ -203,6 +212,7 @@ const BayarPesanan = ({ navigation, route }) => {
               <SemiBold style={{ textAlign: "right" }}>SUBTOTAL</SemiBold>
               <SemiBold style={{ textAlign: "right" }}>PENGIRIMAN</SemiBold>
               <SemiBold style={{ textAlign: "right" }}>BIAYA ADMIN</SemiBold>
+              <SemiBold style={{ textAlign: "right" }}>KODE UNIK</SemiBold>
               <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
             </View>
             <View style={{ width: 120, paddingLeft: 20 }}>
@@ -219,6 +229,7 @@ const BayarPesanan = ({ navigation, route }) => {
                 {metode === "COD" ? 0 : format(data.produk.berat * 10000)}
               </Price>
               <Price>{metode === "COD" ? 0 : format(2500)}</Price>
+              <Price>{metode === "COD" ? 0 : kodeunik}</Price>
               <Price>
                 {metode === "COD"
                   ? format(
@@ -239,7 +250,8 @@ const BayarPesanan = ({ navigation, route }) => {
                           : data.produk.harga
                       ) +
                         data.produk.berat * 10000 +
-                        2500
+                        2500 +
+                        kodeunik
                     )}
               </Price>
             </View>

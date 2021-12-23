@@ -77,6 +77,8 @@ const Penawaran = ({ navigation }) => {
                       imgurl={`${i.produk.url}`}
                       status={i.status}
                       statusColor="black"
+                      navigation={navigation}
+                      penjual={i.produk.user}
                       detail={false}
                     >
                       {i.produk.nama_produk}
@@ -90,6 +92,8 @@ const Penawaran = ({ navigation }) => {
                       imgurl={`${i.produk.url}`}
                       status={i.status}
                       statusColor="green"
+                      penjual={i.produk.user}
+                      navigation={navigation}
                       detail={true}
                       onPress={() =>
                         navigation.navigate("BayarPesanan", { id: i.produk.id })
@@ -106,6 +110,8 @@ const Penawaran = ({ navigation }) => {
                       imgurl={`${i.produk.url}`}
                       status={i.status}
                       statusColor="red"
+                      navigation={navigation}
+                      penjual={i.produk.user}
                       detail={false}
                       onPress={() =>
                         navigation.navigate("BayarPesanan", { id: i.produk.id })

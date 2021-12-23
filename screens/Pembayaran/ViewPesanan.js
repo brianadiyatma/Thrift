@@ -129,6 +129,7 @@ const ViewPesanan = ({ navigation, route }) => {
             <SemiBold style={{ textAlign: "right" }}>SUBTOTAL</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>PENGIRIMAN</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>BIAYA ADMIN</SemiBold>
+            <SemiBold style={{ textAlign: "right" }}>KODE UNIK</SemiBold>
             <SemiBold style={{ textAlign: "right" }}>TOTAL</SemiBold>
           </View>
           <View style={{ width: 120, paddingLeft: 20 }}>
@@ -137,7 +138,10 @@ const ViewPesanan = ({ navigation, route }) => {
             </Price>
             <Price>{format(params.berat * 10000)}</Price>
             <Price>{format(2500)}</Price>
-            <Price>{format(params.total)}</Price>
+            <Price>{format(params.nounik)}</Price>
+            <Price>
+              {format(Number(params.total) + Number(params.nounik))}
+            </Price>
           </View>
         </View>
       </ScrollView>

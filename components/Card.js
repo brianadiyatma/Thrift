@@ -54,7 +54,13 @@ const Card = (props) => {
                 color: COLOR.primary,
               }}
             >
-              Rp{format(props.hargaPromo)}
+              Rp{format(props.hargaPromo)} (
+              {Math.round(
+                ((Number(props.harga) - Number(props.hargaPromo)) /
+                  Number(props.harga)) *
+                  100
+              )}
+              %)
             </Price>
           )}
         </View>
